@@ -17,7 +17,7 @@ def cree_grille(taille):
         ligne = []
         for j in range(taille):
             ligne.append(" ")
-        grille.append(ligne)
+        grille.append(ligne)   # oui
 
     return grille
 
