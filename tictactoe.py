@@ -4,11 +4,6 @@ from graphicalgrid import GraphicalGrid
 
 # A SUPPRIMER ligne 39 à 42
 
-# Je dois reussir à creer une meme fonction pour coordonnee_col et coordonnee_li !!!!!!
-##########################################################################################
-
-
-
 # Generation de ma grille (question 1)
 
 def cree_grille(taille):
@@ -319,12 +314,11 @@ historique = []
 
 while continuer_de_jouer(reponse):#partie_continue():                    # Boucle du jeu
 
+    print("tour", tour)
     if historique != []:
-        print("tour", tour)
         print("dernier coup joué", historique[tour-2]) # A FINIR DE FAIRE LES DEF POUR O ET N
 
-        annuler = input("Annuler le coup ? [O]ui ou [N]on:")
-        test_O_N(annuler, 2)
+        annuler = test_O_N(input("Annuler le coup ? [O]ui ou [N]on:"), 2)
         if continuer_de_jouer(annuler):
             dernier_coup = historique.pop() 
     # A ANALYSER
@@ -335,13 +329,13 @@ while continuer_de_jouer(reponse):#partie_continue():                    # Boucl
     coord_col = def_col_li(coord_col)
 
 
-    if coord_li != "" and coord_col != "":                                              # ICI
+    if coord_li != "" and coord_col != "" and annuler != "O" :                                              # ICI
         historique.append([coord_li, coord_col, joueur(tour)])
         ecrire(tictac, coord_li, coord_col, coup(joueur(tour)))
-
-        affiche(tictac)
-        print(historique)               # A SUPPRIMER SI TESTS OK
         tour += 1
+
+    affiche(tictac)
+    print(historique)               # A SUPPRIMER SI TESTS OK
 
 
     reponse = input("Continuer ? [O]ui ou [N]on:")                  # A FAIRE: IL MANQUE LE ANNULER LE COUP ET VOULEZ VOUS CONTINUER
