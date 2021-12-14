@@ -3,6 +3,9 @@ from graphicalgrid import GraphicalGrid
 # A SUPPRIMER ligne 39 à 42
 # BOUCLE A ETUDIER
 # LIGNE 161
+# Print historique : out of range à regler
+
+# Le probleme des conditions de victoire : coord_li et cord_col cassent les couilles avec le -1
 
 
 # Generation de ma grille (question 1)
@@ -141,16 +144,15 @@ def partie_gagnee_diagonale_1(grille):
 
 
 def partie_gagnee_diagonale_2(grille):
-    longeur = taille_grille(grille)
-    for i in range(longeur):
-        if grille[longeur-1][0] != grille[longeur-1-i][i] or est_vide(grille, longeur-1, 0):
-            return False
-    return True
+        longeur = taille_grille(grille)
+        for i in range(longeur):
+            if grille[longeur-1][0] != grille[longeur-1-i][i] or est_vide(grille, longeur-1, 0):
+                return False
+        return True
 
 
 def partie_gagnee(grille, i, j):
     return partie_gagnee_ligne(grille, i) or partie_gagnee_col(grille, j) or partie_gagnee_diagonale_1(grille) or partie_gagnee_diagonale_2(grille)
-
 
 ###################################
 # Qui joue ? Joueur 1 ou joueur 2
@@ -275,28 +277,23 @@ def test_O_N(reponse, question):
 longeur_grille = 3 # int(input("Rentrez le nombre de lignes"))
 tictac = cree_grille(longeur_grille)
 
-# ecrire(tictac, 0, 0, " ")
-# ecrire(tictac, 0, 1, " ")
-# ecrire(tictac, 0, 2, " ")
+# ecrire(tictac, 0, 0, "X")
+# ecrire(tictac, 0, 1, "X")
+# ecrire(tictac, 0, 2, "X")
 # ecrire(tictac, 1, 0, " ")
 # ecrire(tictac, 1, 1, " ")
-# ecrire(tictac, 1, 2, "X")
-# ecrire(tictac, 2, 0, "X")
+# ecrire(tictac, 1, 2, "O")
+# ecrire(tictac, 2, 0, "O")
 # ecrire(tictac, 2, 1, " ")
 # ecrire(tictac, 2, 2, " ")
 # affiche(tictac)
 
 
-# print("ligne", partie_gagnee_ligne(tictac, 2))
-# print("colonne", partie_gagnee_col(tictac, 2))
-# print("diag 1", partie_gagnee_diagonale_1(tictac))
-# print("diag 2", partie_gagnee_diagonale_2(tictac))
-# print("grille pleine", grille_pleine(tictac))
 
 
 tour = 1
-coord_li = -1
-coord_col = -1
+coord_li = 0
+coord_col = 0
 
 reponse = "O"
 annuler = ""
@@ -304,14 +301,15 @@ annuler = ""
 historique = []
 
 
-while True: #while partie_continue(tictac, coord_li, coord_col, reponse):                   # Boucle du jeu
+while partie_continue(tictac, coord_li, coord_col, reponse):                   # Boucle du jeu
 
     print("tour", tour)
 
-    if historique != []:                                                  # Affiche l'historique si il existe
-        print("dernier coup joué", historique[tour-2])
+    if len(historique) > 0: # historique != []                                        # Affiche l'historique si il existe
+        print("dernier coup joué", historique[tour-2])                                 # Out of range à régler
         annuler = test_O_N(input("Annuler le coup ? [O]ui ou [N]on:"), 2) 
-        if annuler == "O":                                                 # Annule ou non le coup précedent
+        if annuler == "O":
+            tour -= 1                                                 # Annule ou non le coup précedent
             dernier_coup = historique.pop() 
             supprimer(tictac, dernier_coup[0], dernier_coup[1])
 
@@ -328,11 +326,11 @@ while True: #while partie_continue(tictac, coord_li, coord_col, reponse):       
     if coord_li != "" and coord_col != "" and annuler != "O" :              # Si l'on n'annule aucun coup et pas "entrer"  "ICI"
         historique.append([coord_li, coord_col, joueur(tour)])
         ecrire(tictac, coord_li, coord_col, coup(joueur(tour)))
-        tour += 1
         print("tour ajouté")
         affiche(tictac)                 # TEST
         print(historique)               # TEST
 
+    tour += 1
     reponse = input("Continuer ? [O]ui ou [N]on:")
     test_O_N(reponse, 1)
     annuler = "N"
@@ -352,6 +350,12 @@ elif not continuer_de_jouer(reponse):
 
 print("fin du programme")
 
+print("ligne", partie_gagnee_ligne(tictac, 2))
+print("colonne", partie_gagnee_col(tictac, 2))
+print("diag 1", partie_gagnee_diagonale_1(tictac))
+print("diag 2", partie_gagnee_diagonale_2(tictac))
+print("grille pleine", grille_pleine(tictac))
+print("gagné", partie_gagnee(tictac, coord_li, coord_col))
 
 # SI la grille n'est pas pleine ET que personne n'a gagné ET que personne n'a dit NON:
 #  On joue ?
