@@ -1,10 +1,14 @@
 from graphicalgrid import GraphicalGrid
 
-# A SUPPRIMER ligne 39 à 42
-# BOUCLE A ETUDIER
-# LIGNE 161
+# BOUCLE A ETUDIER:
 # Print historique : out of range à regler
 # Regler le pb de enter
+# A FAIRE IMPORTANT : NE PAS RENTRER UNE COORDONNEE DEJA PRISE
+
+# A demander au prof :
+# si la variable dans coord_col_li est ok
+# si l'historique des coups doit etre en liste ou en tuple
+#
 
 # Generation de ma grille (question 1)
 
@@ -47,7 +51,7 @@ def est_vide(grille, i, j):
 
 
 def ecrire(grille, i, j, symbole):
-    if est_vide(grille, i, j): #and (symbole == "X" or symbole == "O"): # A TESTER PUIS SUPPRIMER
+    if est_vide(grille, i, j):
         grille[i][j] = symbole
 
 
@@ -153,8 +157,7 @@ def partie_gagnee(grille, i, j):
 
 def joueur(tour):
     if tour % 2:
-        return "O" # a modifier en 1 et 2 si erreur
-    return "X"
+        return "O"
 
 def coup(joueur):
     if joueur == "X":
@@ -175,7 +178,7 @@ def partie_continue(grille, coord_li, coord_col, reponse):
 
 
 def def_col_li(coordonnee, li_col):
-        coordonnee = input("Entrez un numéro de " + li_col)
+        coordonnee = input("Entrez un numéro de " + li_col)                     # DEMANDER AU PROF SI OK VARIABLE
         if coordonnee != "":
             while not test_entree_chiffre(coordonnee):
                 print("Veuillez entrer un chiffre svp")
@@ -235,9 +238,9 @@ def test_O_N(reponse, question):
     while not saisie_O_N(reponse):
         print("""Veuillez entrer "O" ou "N" s'il vous plait""")
         if question == 1:
-            reponse = input("Continuer ? [O]ui ou [N]on:")
+            reponse = input("On continue ? [O]ui ou [N]on:")
         if question == 2:
-            reponse == input("Annuler ? [O]ui ou [N]on")
+            reponse == input("Voulez-vous annuler ce coup ? [O]ui ou [N]on")
     return reponse
 
 
@@ -266,19 +269,22 @@ reponse = "O"
 annuler = ""
 historique = []
 
-longeur_grille = int(input("Rentrez le nombre de lignes"))
+longeur_grille = int(input("Rentrez la taille de la grille :"))
 tictac = cree_grille(longeur_grille)
 
 
-while partie_continue(tictac, coord_li, coord_col, reponse):                   # Boucle du jeu
+while partie_continue(tictac, coord_li, coord_col, reponse):                          # Boucle du jeu
+
+    reponse = input("On continue ? [O]ui ou [N]on :")
+    test_O_N(reponse, 1)
 
     print("tour", tour)
 
     if len(historique) > 0: # historique != []                                        # Affiche l'historique si il existe
-        print("dernier coup joué =", historique[tour-2])                                 # Out of range à régler
-        annuler = test_O_N(input("Annuler le coup ? [O]ui ou [N]on:"), 2) 
-        if annuler == "O":
-            tour -= 1                                                 # Annule ou non le coup précedent
+        print("dernier coup joué =", historique[tour-2])                              # Out of range à régler
+        annuler = test_O_N(input("Voulez-vous annuler ce coup ? [O]ui ou [N]on :"), 2) 
+        if annuler == "O":                                                            # Annule ou non le coup précedent
+            tour -= 1
             dernier_coup = historique.pop() 
             supprimer(tictac, dernier_coup[0], dernier_coup[1])
 
@@ -288,20 +294,18 @@ while partie_continue(tictac, coord_li, coord_col, reponse):                   #
         affiche(tictac)                 # TEST
         print(historique)               # TEST
     else:
-        print("C'est au tour du joueur", joueur(tour), "de jouer")  #
-        coord_li = def_col_li(coord_li, "ligne.")                   # CES 3 LIGNES A DEPLACER LIGNE "ICI"
-        coord_col = def_col_li(coord_col, "colonne.")               #
+        print("C'est au tour du joueur", joueur(tour))  #
+        coord_li = def_col_li(coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")                   # CES 3 LIGNES A DEPLACER LIGNE "ICI"
+        coord_col = def_col_li(coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")               #
 
-    if coord_li != "" and coord_col != "" and annuler != "O" :              # Si l'on n'annule aucun coup et pas "entrer"  "ICI"
-        historique.append([coord_li, coord_col, joueur(tour)])
+    if coord_li != "" and coord_col != "" and annuler != "O" :                         # Si l'on n'annule aucun coup et pas "entrer"  "ICI"
+        historique.append((coord_li, coord_col, joueur(tour)))
         ecrire(tictac, coord_li, coord_col, coup(joueur(tour)))
         print("tour ajouté")
         affiche(tictac)                 # TEST
         print(historique)               # TEST
 
     tour += 1
-    reponse = input("Continuer ? [O]ui ou [N]on:")
-    test_O_N(reponse, 1)
     annuler = "N"
 
 if grille_pleine(tictac):
