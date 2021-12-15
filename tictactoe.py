@@ -1,14 +1,12 @@
 from graphicalgrid import GraphicalGrid
 
 # BOUCLE A ETUDIER:
-# Print historique : out of range à regler (p-e réglé déjà)
-# A FAIRE IMPORTANT : NE PAS RENTRER UNE COORDONNEE DEJA PRISE
 # A FAIRE IMPORTANT : probleme d'entrée de coordonnée (str)
 # test_entree_chiffre à etudier pour decouper en "est-ce que je ne peux pas decouper en espace, +/- et chiffre"
 
-# LEs trois test O et N sont TRES BIZARRES: à etudier
+# Les trois test O et N sont TRES BIZARRES: à etudier
  
-# N à la question "voulez vous continuner" ne sort pas de la boucle 
+# N à la question "voulez vous continuer" ne sort pas de la boucle 
 
 # Problème de boucle quand on demande d'annuler ce coup
 
@@ -93,19 +91,6 @@ def affiche(grille):
                     print("", grille[i][j], "|", end="")
             print()
             print("----" * (taille-1) + "---")
-
-
-# ---------------Partie graphique------------------------------------
-
-
-# grille_graphique = GraphicalGrid(10)
-
-# grille_graphique.write(0, 1, "O")
-# grille_graphique.write(3, 4, "X")
-# grille_graphique.write(0, 0, "X")
-# grille_graphique.erase(3, 4)
-
-# grille_graphique.wait_quit()
 
 
 #---------Fonctions de fin de jeu (arret, gagné, nul)----------------
@@ -248,6 +233,21 @@ def test_O_N(reponse, question):
             reponse == input("Voulez-vous annuler ce coup ? [O]ui ou [N]on")
     return reponse
 
+# ------- Suppression ----------------------------------------------------------
+
+def suppression(grille, histo):
+    dernier_coup = histo.pop() 
+    supprimer(grille, dernier_coup[0], dernier_coup[1])
+    grille_graphique.erase(dernier_coup[0], dernier_coup[1])  
+
+
+# -------------- Ecriture ---------------------------------------------------
+
+def ecriture(grille, coord_li, coord_col, tour, histo):
+    histo.append((coord_li, coord_col, joueur(tour)))
+    ecrire(grille, coord_li, coord_col, coup(joueur(tour)))
+    grille_graphique.write(coord_li, coord_col, joueur(tour))
+
 
 # -------Déroulement du jeu-----------------------------------------
 
@@ -276,6 +276,7 @@ historique = []
 coord_vide = False
 
 longeur_grille = int(input("Rentrez la taille de la grille :"))
+grille_graphique = GraphicalGrid(longeur_grille)
 tictac = cree_grille(longeur_grille)
 
 
@@ -292,28 +293,23 @@ while partie_continue(tictac, coord_li, coord_col, reponse):                    
             annuler = test_O_N(input("Voulez-vous annuler ce coup ? [O]ui ou [N]on :"), 2) 
             if annuler == "O":                                                            # Annule ou non le coup précedent
                 tour -= 1
-                dernier_coup = historique.pop() 
-                supprimer(tictac, dernier_coup[0], dernier_coup[1])
+                suppression(tictac, historique)             # ESSAI
 
-        # if annuler == "O":                  # TEST
-        #     print("coup annulé")            # TEST
-        #     affiche(tictac)                 # TEST
-        #     print(historique)               # TEST
-        # else:
-        print("C'est au tour du joueur", joueur(tour))  #
-        coord_li = def_col_li(coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :") 
-        coord_col = def_col_li(coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")      
-
-        while not est_vide(tictac, coord_li, coord_col):
-            print("La case n'est pas vide")
+        if annuler != "O":
+            print("C'est au tour du joueur", joueur(tour))  #
             coord_li = def_col_li(coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
-            coord_col = def_col_li(coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")
-
+            if coord_li != "":              # FAIRE NE PLUS PROPRE
+                coord_col = def_col_li(coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")      
 
         if coord_li != "" and coord_col != "" and annuler != "O":
-            historique.append((coord_li, coord_col, joueur(tour)))
-            ecrire(tictac, coord_li, coord_col, coup(joueur(tour)))
-            print("tour ajouté")
+            while not est_vide(tictac, coord_li, coord_col):
+                print("La case n'est pas vide")
+                coord_li = def_col_li(coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
+                coord_col = def_col_li(coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")
+                
+            ecriture(tictac, coord_li, coord_col, tour, historique)
+
+            print("tour ajouté")            # TEST
             affiche(tictac)                 # TEST
             print(historique)               # TEST
             tour += 1
@@ -330,6 +326,7 @@ elif partie_gagnee(tictac, coord_li, coord_col):
 elif not continuer_de_jouer(reponse):
     print("vous avez arreté de jouer")
 
+grille_graphique.wait_quit()                                                        # Partie graphique
 
 # print("ligne", partie_gagnee_ligne(tictac, 2))
 # print("colonne", partie_gagnee_col(tictac, 2))
