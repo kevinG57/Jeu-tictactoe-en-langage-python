@@ -1,10 +1,16 @@
 from graphicalgrid import GraphicalGrid
 
 # BOUCLE A ETUDIER:
-# Print historique : out of range à regler
+# Print historique : out of range à regler (p-e réglé déjà)
 # A FAIRE IMPORTANT : NE PAS RENTRER UNE COORDONNEE DEJA PRISE
 # A FAIRE IMPORTANT : probleme d'entrée de coordonnée (str)
 # test_entree_chiffre à etudier pour decouper en "est-ce que je ne peux pas decouper en espace, +/- et chiffre"
+
+# LEs trois test O et N sont TRES BIZARRES: à etudier
+ 
+# N à la question "voulez vous continuner" ne sort pas de la boucle 
+
+# Problème de boucle quand on demande d'annuler ce coup
 
 
 # Generation de ma grille (question 1)
@@ -267,6 +273,7 @@ coord_col = 0
 reponse = "O"
 annuler = ""
 historique = []
+coord_vide = False
 
 longeur_grille = int(input("Rentrez la taille de la grille :"))
 tictac = cree_grille(longeur_grille)
@@ -277,40 +284,43 @@ while partie_continue(tictac, coord_li, coord_col, reponse):                    
     reponse = input("On continue ? [O]ui ou [N]on :")
     test_O_N(reponse, 1)
 
-    print("tour", tour)
+    if reponse == "O":
+        print("tour", tour)
 
-    if len(historique) > 0: # historique != []                                        # Affiche l'historique si il existe
-        print("dernier coup joué =", historique[tour-2])                              # Out of range à régler
-        annuler = test_O_N(input("Voulez-vous annuler ce coup ? [O]ui ou [N]on :"), 2) 
-        if annuler == "O":                                                            # Annule ou non le coup précedent
-            tour -= 1
-            dernier_coup = historique.pop() 
-            supprimer(tictac, dernier_coup[0], dernier_coup[1])
+        if len(historique) > 0: # historique != []                                        # Affiche l'historique si il existe
+            print("dernier coup joué =", historique[tour-2])                              # Out of range à régler
+            annuler = test_O_N(input("Voulez-vous annuler ce coup ? [O]ui ou [N]on :"), 2) 
+            if annuler == "O":                                                            # Annule ou non le coup précedent
+                tour -= 1
+                dernier_coup = historique.pop() 
+                supprimer(tictac, dernier_coup[0], dernier_coup[1])
 
-    if annuler == "O":                  # TEST
-        print("coup annulé")            # TEST
-        affiche(tictac)                 # TEST
-        print(historique)               # TEST
-    else:
+        # if annuler == "O":                  # TEST
+        #     print("coup annulé")            # TEST
+        #     affiche(tictac)                 # TEST
+        #     print(historique)               # TEST
+        # else:
         print("C'est au tour du joueur", joueur(tour))  #
-        coord_li = def_col_li(coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")                   # CES 3 LIGNES A DEPLACER LIGNE "ICI"
-        coord_col = def_col_li(coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")               #
+        coord_li = def_col_li(coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :") 
+        coord_col = def_col_li(coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")      
+
+        while not est_vide(tictac, coord_li, coord_col):
+            print("La case n'est pas vide")
+            coord_li = def_col_li(coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
+            coord_col = def_col_li(coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")
 
 
-    if coord_li != "" and coord_col != "" and annuler != "O":                         # Si l'on n'annule aucun coup et pas "entrer"  "ICI"
-        if est_vide(tictac, coord_li, coord_col):                   # Ici il faut que je gere si une case n'est pas vide
+        if coord_li != "" and coord_col != "" and annuler != "O":
             historique.append((coord_li, coord_col, joueur(tour)))
             ecrire(tictac, coord_li, coord_col, coup(joueur(tour)))
             print("tour ajouté")
             affiche(tictac)                 # TEST
             print(historique)               # TEST
             tour += 1
-        else:
-            print("La case n'est pas vide")
-        
-    annuler = "N"
-    coord_li = 0                            # A etudier pour faire plus propre
-    coord_col = 0
+            
+        annuler = "N"
+        coord_li = 0                            # A etudier pour faire plus propre
+        coord_col = 0
 
 
 if grille_pleine(tictac):
