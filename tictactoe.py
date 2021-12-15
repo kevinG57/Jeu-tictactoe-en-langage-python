@@ -2,13 +2,10 @@ from graphicalgrid import GraphicalGrid
 
 # BOUCLE A ETUDIER:
 # Print historique : out of range à regler
-# Regler le pb de enter
 # A FAIRE IMPORTANT : NE PAS RENTRER UNE COORDONNEE DEJA PRISE
+# A FAIRE IMPORTANT : probleme d'entrée de coordonnée (str)
+# test_entree_chiffre à etudier pour decouper en "est-ce que je ne peux pas decouper en espace, +/- et chiffre"
 
-# A demander au prof :
-# si la variable dans coord_col_li est ok
-# si l'historique des coups doit etre en liste ou en tuple
-#
 
 # Generation de ma grille (question 1)
 
@@ -108,7 +105,6 @@ def affiche(grille):
 #---------Fonctions de fin de jeu (arret, gagné, nul)----------------
 
 
-
 # Controle de grille pleine (pour arret de jeu)
 
 def grille_pleine(grille):
@@ -126,6 +122,7 @@ def partie_gagnee_ligne(grille, li):
         if grille[li][0] != grille[li][taille_grille(grille)-i-1] or est_vide(grille, li, 0):
             return False
     return True
+
 
 def partie_gagnee_col(grille,col):
     for i in range(taille_grille(grille)):
@@ -153,11 +150,19 @@ def partie_gagnee(grille, i, j):
     return partie_gagnee_ligne(grille, i) or partie_gagnee_col(grille, j) or partie_gagnee_diagonale_1(grille) or partie_gagnee_diagonale_2(grille)
 
 
+#--------------------Partie finie------------------------
+
+def partie_continue(grille, coord_li, coord_col, reponse): 
+    return not grille_pleine(grille) and not partie_gagnee(grille, coord_li, coord_col) and continuer_de_jouer(reponse)
+
+
 # -------------Qui joue ?---------------------------------
 
 def joueur(tour):
     if tour % 2:
         return "O"
+    else:
+        return "X"
 
 def coup(joueur):
     if joueur == "X":
@@ -167,34 +172,28 @@ def coup(joueur):
     return symbole
 
 
-#--------------------Partie finie------------------------
-
-def partie_continue(grille, coord_li, coord_col, reponse): 
-    return not grille_pleine(grille) and not partie_gagnee(grille, coord_li, coord_col) and continuer_de_jouer(reponse)
-
-
 
 # --------Vérification des entrées de col et li---------------------------
 
 
 def def_col_li(coordonnee, li_col):
-        coordonnee = input("Entrez un numéro de " + li_col)                     # DEMANDER AU PROF SI OK VARIABLE
-        if coordonnee != "":
-            while not test_entree_chiffre(coordonnee):
-                print("Veuillez entrer un chiffre svp")
+    coordonnee = input("Entrez un numéro de " + li_col)                     # DEMANDER AU PROF SI OK VARIABLE
+    if coordonnee != "":
+        while not test_entree_chiffre(coordonnee):
+            print("Veuillez entrer un chiffre svp")
+            coordonnee = input("Entrez un numéro de " + li_col)
+
+        while not test_entree_coord(coordonnee):
+            if int(coordonnee) < 0:                                          # VOIR SI OK DE FAIRE DEUX FONCTIONS
+                print("Veuillez entrer un chiffre supperieur à 0")
+                coordonnee = input("Entrez un numéro de " + li_col)
+            if int(coordonnee) > taille_grille(tictac):
+                print("Veuillez entrer un chiffre inferieur à la longeur")
                 coordonnee = input("Entrez un numéro de " + li_col)
 
-            while not test_entree_coord(coordonnee):
-                if int(coordonnee) < 0:                                          # VOIR SI OK DE FAIRE DEUX FONCTIONS
-                    print("Veuillez entrer un chiffre supperieur à 0")
-                    coordonnee = input("Entrez un numéro de " + li_col)
-                if int(coordonnee) > taille_grille(tictac):
-                    print("Veuillez entrer un chiffre inferieur à la longeur")
-                    coordonnee = input("Entrez un numéro de " + li_col)
+        return int(coordonnee)
 
-
-            return int(coordonnee)
-        return coordonnee
+    return coordonnee
 
 
 # ---------Controle de la bonne saisie d'un chiffre-------------------------
@@ -288,7 +287,6 @@ while partie_continue(tictac, coord_li, coord_col, reponse):                    
             dernier_coup = historique.pop() 
             supprimer(tictac, dernier_coup[0], dernier_coup[1])
 
-
     if annuler == "O":                  # TEST
         print("coup annulé")            # TEST
         affiche(tictac)                 # TEST
@@ -298,15 +296,22 @@ while partie_continue(tictac, coord_li, coord_col, reponse):                    
         coord_li = def_col_li(coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")                   # CES 3 LIGNES A DEPLACER LIGNE "ICI"
         coord_col = def_col_li(coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")               #
 
-    if coord_li != "" and coord_col != "" and annuler != "O" :                         # Si l'on n'annule aucun coup et pas "entrer"  "ICI"
-        historique.append((coord_li, coord_col, joueur(tour)))
-        ecrire(tictac, coord_li, coord_col, coup(joueur(tour)))
-        print("tour ajouté")
-        affiche(tictac)                 # TEST
-        print(historique)               # TEST
 
-    tour += 1
+    if coord_li != "" and coord_col != "" and annuler != "O":                         # Si l'on n'annule aucun coup et pas "entrer"  "ICI"
+        if est_vide(tictac, coord_li, coord_col):                   # Ici il faut que je gere si une case n'est pas vide
+            historique.append((coord_li, coord_col, joueur(tour)))
+            ecrire(tictac, coord_li, coord_col, coup(joueur(tour)))
+            print("tour ajouté")
+            affiche(tictac)                 # TEST
+            print(historique)               # TEST
+            tour += 1
+        else:
+            print("La case n'est pas vide")
+        
     annuler = "N"
+    coord_li = 0                            # A etudier pour faire plus propre
+    coord_col = 0
+
 
 if grille_pleine(tictac):
     print("egalité !")
@@ -319,6 +324,6 @@ elif not continuer_de_jouer(reponse):
 # print("ligne", partie_gagnee_ligne(tictac, 2))
 # print("colonne", partie_gagnee_col(tictac, 2))
 # print("diag 1", partie_gagnee_diagonale_1(tictac))
-# print("diag 2", partie_gagnee_diagonale_2(tictac))                #T TEST A SUPPRIMER
+# print("diag 2", partie_gagnee_diagonale_2(tictac))                # TEST A SUPPRIMER
 # print("grille pleine", grille_pleine(tictac))
 # print("gagné", partie_gagnee(tictac, coord_li, coord_col))
