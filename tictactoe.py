@@ -2,13 +2,13 @@ from graphicalgrid import GraphicalGrid
 
 # BOUCLE A ETUDIER:
 # A FAIRE IMPORTANT : probleme d'entrée de coordonnée (str)
+
 # test_entree_chiffre à etudier pour decouper en "est-ce que je ne peux pas decouper en espace, +/- et chiffre"
 
 # Les trois test O et N sont TRES BIZARRES: à etudier
- 
+# Problème de boucle quand on demande d'annuler ce coup
 # N à la question "voulez vous continuer" ne sort pas de la boucle 
 
-# Problème de boucle quand on demande d'annuler ce coup
 
 
 # Generation de ma grille (question 1)
@@ -251,20 +251,6 @@ def ecriture(grille, coord_li, coord_col, tour, histo):
 
 # -------Déroulement du jeu-----------------------------------------
 
-
-# ecrire(tictac, 0, 0, "X")
-# ecrire(tictac, 0, 1, "X")
-# ecrire(tictac, 0, 2, "X")
-# ecrire(tictac, 1, 0, " ")
-# ecrire(tictac, 1, 1, " ")
-# ecrire(tictac, 1, 2, "O")
-# ecrire(tictac, 2, 0, "O")
-# ecrire(tictac, 2, 1, " ")
-# ecrire(tictac, 2, 2, " ")
-# affiche(tictac)
-
-
-
 # Définition des variables avant de rentrer dans la boucle de jeu
 
 tour = 1
@@ -306,7 +292,7 @@ while partie_continue(tictac, coord_li, coord_col, reponse):                    
                 print("La case n'est pas vide")
                 coord_li = def_col_li(coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
                 coord_col = def_col_li(coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")
-                
+
             ecriture(tictac, coord_li, coord_col, tour, historique)
 
             print("tour ajouté")            # TEST
