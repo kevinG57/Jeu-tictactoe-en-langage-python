@@ -1,14 +1,11 @@
 from graphicalgrid import GraphicalGrid
 
-# BOUCLE A ETUDIER:
+# A régler:
+# Défaut quand on tape ENTER après le message "la case n'est pas vide"
 
-# test_entree_chiffre à etudier pour decouper en "est-ce que je ne peux pas decouper en espace puis +/- puis chiffre"
+# Boucle coord ligne et colonne avec ENTER à etudier 
 
-# Les trois test O et N sont TRES BIZARRES: à etudier (boucle infinie)
-# Problème de boucle quand on demande d'annuler ce coup
-# N à la question "voulez vous continuer" ne sort pas de la boucle 
-
-
+# Changer les conditions de win : grille[0][0] INTERDIT il faut utiliser est(grille, i, j)
 
 # Generation de ma grille (question 1)
 
@@ -91,7 +88,7 @@ def affiche(grille):
             print()
             print("----" * (taille-1) + "---")
 
-# ------ Creation grille --------------------------------------------
+# ------ Creation grille ----------------------------------------------------------
 
 def test_taille_grille(chiffre):
 
@@ -104,7 +101,7 @@ def test_taille_grille(chiffre):
         chiffre = input()
     return int(chiffre)
 
-#---------Fonctions de fin de jeu (arret, gagné, nul)----------------
+#---------Fonctions de fin de jeu (arret, gagné, nul)-------------------------------
 
 
 # Controle de grille pleine (pour arret de jeu)
@@ -117,7 +114,9 @@ def grille_pleine(grille):
     return True
 
 
-# -------Controle si la partie est gagnee ou non-----------------------------------
+# -------Controle si la partie est gagnee ou non------------------------------------
+
+
 
 def partie_gagnee_ligne(grille, li):  
     for i in range(taille_grille(grille)):
@@ -140,7 +139,7 @@ def partie_gagnee_diagonale_1(grille):
     return True
 
 
-def partie_gagnee_diagonale_2(grille):
+def partie_gagnee_diagonale_2(grille,):
         longeur = taille_grille(grille)
         for i in range(longeur):
             if grille[longeur-1][0] != grille[longeur-1-i][i] or est_vide(grille, longeur-1, 0):
@@ -152,52 +151,43 @@ def partie_gagnee(grille, i, j):
     return partie_gagnee_ligne(grille, i) or partie_gagnee_col(grille, j) or partie_gagnee_diagonale_1(grille) or partie_gagnee_diagonale_2(grille)
 
 
-#--------------------Partie finie------------------------
+#--------------------Partie finie----------------------------------------------------
 
 def partie_continue(grille, coord_li, coord_col, reponse): 
     return not grille_pleine(grille) and not partie_gagnee(grille, coord_li, coord_col) and continuer_de_jouer(reponse)
 
 
-# -------------Qui joue ?---------------------------------
+# -------------Qui joue ?-------------------------------------------------------------
 
 def joueur(tour):
     if tour % 2:
-        return "O"
-    else:
         return "X"
-
-def coup(joueur):
-    if joueur == "X":
-        symbole = "X"
-    if joueur == "O":
-        symbole = "O"
-    return symbole
+    else:
+        return "O"
 
 
+# --------Vérification des entrées de col et li-----------------------------------------
 
-# --------Vérification des entrées de col et li---------------------------
-
-
-def def_col_li(coordonnee, li_col):
-    coordonnee = input("Entrez un numéro de " + li_col)                     # DEMANDER AU PROF SI OK VARIABLE
+def def_col_li(grille, coordonnee, txt_li_col):
+    coordonnee = input("Entrez un numéro de " + txt_li_col)                     # DEMANDER AU PROF SI OK VARIABLE
     if coordonnee != "":
-        while not test_entree_chiffre(coordonnee) or not test_entree_coord(int(coordonnee)):
+        while not test_entree_chiffre(coordonnee) or not test_entree_coord(grille, int(coordonnee)):
 
             if not test_entree_chiffre(coordonnee):
                 print("Veuillez entrer un chiffre svp")
-                coordonnee = input("Entrez un numéro de " + li_col)
+                coordonnee = input("Entrez un numéro de " + txt_li_col)
             else:
-                if not test_entree_coord(coordonnee):            # intendation en plus pour tester
+                if not test_entree_coord(grille, coordonnee):            # intendation en plus pour tester
                     if int(coordonnee) < 0:                                          # VOIR SI OK DE FAIRE DEUX FONCTIONS
                         print("Veuillez entrer un chiffre supperieur à 0")
-                        coordonnee = input("Entrez un numéro de " + li_col)
-                    if int(coordonnee) >= taille_grille(tictac):
+                        coordonnee = input("Entrez un numéro de " + txt_li_col)
+                    if int(coordonnee) >= taille_grille(grille):
                         print("Veuillez entrer un chiffre inferieur à la longeur")
-                        coordonnee = input("Entrez un numéro de " + li_col)
-
+                        coordonnee = input("Entrez un numéro de " + txt_li_col)
     return coordonnee
 
-# ---------Controle de la bonne saisie d'un chiffre-------------------------
+
+# ---------Controle de la bonne saisie d'un chiffre---------------------------------------
 
 def test_entree_chiffre(saisie):
     chiffres = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", " "]
@@ -210,16 +200,15 @@ def test_entree_chiffre(saisie):
             return False
     return True
 
+# ----------Coordonnée est-elle correct ? -------------------------------------------------
 
-# ----------Coordonnée est-elle correct ? ------------------------------------
-
-def test_entree_coord(saisie):
-    if 0 <= int(saisie) < taille_grille(tictac):
+def test_entree_coord(grille, saisie):
+    if 0 <= int(saisie) < taille_grille(grille):
         return True
     return False
 
 
-# ----------Continuer de jouer ? O ou N ?------------------------------------
+# ----------Continuer de jouer ? O ou N ?--------------------------------------------------
 
 def saisie_O_N(saisie):
     if saisie != "N" and saisie != "O":
@@ -234,7 +223,7 @@ def continuer_de_jouer(saisie):
         return True
 
 
-# ---------- Boucle de test en attente de "O" ou de "N" -----------------------
+# ---------- Boucle de test en attente de "O" ou de "N" ------------------------------------
 
 def test_O_N(reponse, question):
     while not saisie_O_N(reponse):
@@ -247,27 +236,29 @@ def test_O_N(reponse, question):
     print(reponse)
     return reponse
 
-# ------- Suppression ---------------------------------------------------------
 
-def suppression(grille, histo):
+# ------- Suppression du coup précédent ----------------------------------------------------
+
+def suppression(grille, grille_graph, histo):
     dernier_coup = histo.pop() 
     supprimer(grille, dernier_coup[0], dernier_coup[1])
-    grille_graphique.erase(dernier_coup[0], dernier_coup[1])  
+    grille_graph.erase(dernier_coup[0], dernier_coup[1])  
 
 
-# -------------- Ecriture ---------------------------------------------------
+# -------------- Ecriture d'un coup joué ---------------------------------------------------
 
-def ecriture(grille, coord_li, coord_col, tour, histo):
+def ecriture(grille, grille_graph, coord_li, coord_col, tour, histo):
     histo.append((coord_li, coord_col, joueur(tour)))
-    ecrire(grille, coord_li, coord_col, coup(joueur(tour)))
-    grille_graphique.write(coord_li, coord_col, joueur(tour))
+    ecrire(grille, coord_li, coord_col, joueur(tour))
+    grille_graph.write(coord_li, coord_col, joueur(tour))
 
-# -------------- Resultat de la partie --------------------------------------
 
-def fin_de_jeu():
-    if grille_pleine(tictac):
+# -------------- Resultat de la partie -----------------------------------------------------
+
+def fin_de_jeu(grille, coord_li, coord_col, reponse, tour):
+    if grille_pleine(grille):
         print("egalité !")
-    elif partie_gagnee(tictac, coord_li, coord_col):
+    elif partie_gagnee(grille, coord_li, coord_col):
         print("Le joueur", joueur(tour+1), "a gagné")
     elif not continuer_de_jouer(reponse):
         print("vous avez arreté de jouer")
@@ -275,63 +266,53 @@ def fin_de_jeu():
 
 # -------Déroulement du jeu-----------------------------------------
 
-# Définition des variables avant de rentrer dans la boucle de jeu
+def jeu():
 
-tour = 1
-coord_li = 0
-coord_col = 0
-reponse = "O"
-annuler = ""
-historique = []
-coord_vide = False
+    tour = 1
+    coord_li = 0
+    coord_col = 0
+    reponse = "O"
+    annuler = ""
+    historique = []
 
-longeur_grille = test_taille_grille(input("Rentrez la taille de la grille :"))
-grille_graphique = GraphicalGrid(longeur_grille)
-tictac = cree_grille(longeur_grille)
+    longeur_grille = test_taille_grille(input("Rentrez la taille de la grille :"))
+    grille_graphique = GraphicalGrid(longeur_grille)
+    tictac = cree_grille(longeur_grille)
+
+    while partie_continue(tictac, coord_li, coord_col, reponse):                               # Boucle du jeu
+
+        reponse = test_O_N(input("On continue ? [O]ui ou [N]on :"), 1)
+        
+        if reponse == "O":
+
+            if len(historique) > 0:                                                           # Affiche l'historique si il existe
+                print("dernier coup joué =", historique[tour-2])
+                annuler = test_O_N(input("Voulez-vous annuler ce coup ? [O]ui ou [N]on :"), 2) 
+                if annuler == "O":                                                            # Annule ou non le coup précedent
+                    tour -= 1
+                    suppression(tictac, grille_graphique, historique) 
+######################################################################################################
+            if annuler != "O":
+                print("C'est au tour du joueur", joueur(tour))
+                coord_li = def_col_li(tictac, coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
+                if coord_li != "":              # FAIRE EN PLUS PROPRE
+                    coord_col = def_col_li(tictac, coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")
+
+            if coord_li != "" and coord_col != "" and annuler != "O":
+                while not est_vide(tictac, int(coord_li), int(coord_col)):
+                    print("La case n'est pas vide")
+                    coord_li = def_col_li(tictac, coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
+                    coord_col = def_col_li(tictac, coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :") # Si on rentre  mais qu'on tape entrer: bugg
+                if coord_li != "" and coord_col != "":
+                    ecriture(tictac, grille_graphique, int(coord_li), int(coord_col), tour, historique)
+                    tour += 1
+#########################################################################################################
+            annuler = "N"
+            coord_li = 0                            # A etudier pour faire plus propre
+            coord_col = 0
+
+    fin_de_jeu(tictac, coord_li, coord_col, reponse, tour)
+    grille_graphique.wait_quit()
 
 
-while partie_continue(tictac, coord_li, coord_col, reponse):                               # Boucle du jeu
-
-    reponse = test_O_N(input("On continue ? [O]ui ou [N]on :"), 1)
-    
-    if reponse == "O":
-        print("tour", tour)
-
-        if len(historique) > 0:                                                           # Affiche l'historique si il existe
-            print("dernier coup joué =", historique[tour-2])
-            annuler = test_O_N(input("Voulez-vous annuler ce coup ? [O]ui ou [N]on :"), 2) 
-            if annuler == "O":                                                            # Annule ou non le coup précedent
-                tour -= 1
-                suppression(tictac, historique) 
-
-        if annuler != "O":
-            print("C'est au tour du joueur", joueur(tour))  #
-            coord_li = def_col_li(coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
-            if coord_li != "":              # FAIRE EN PLUS PROPRE
-                coord_col = def_col_li(coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")
-
-        if coord_li != "" and coord_col != "" and annuler != "O":
-            while not est_vide(tictac, int(coord_li), int(coord_col)):
-                print("La case n'est pas vide")
-                coord_li = def_col_li(coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
-                coord_col = def_col_li(coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")
-
-            ecriture(tictac, int(coord_li), int(coord_col), tour, historique)
-
-            tour += 1
-            
-        annuler = "N"
-        coord_li = 0                            # A etudier pour faire plus propre
-        coord_col = 0
-
-
-fin_de_jeu()
-
-grille_graphique.wait_quit()
-
-# print("ligne", partie_gagnee_ligne(tictac, 2))
-# print("colonne", partie_gagnee_col(tictac, 2))
-# print("diag 1", partie_gagnee_diagonale_1(tictac))
-# print("diag 2", partie_gagnee_diagonale_2(tictac))                # TEST A SUPPRIMER
-# print("grille pleine", grille_pleine(tictac))
-# print("gagné", partie_gagnee(tictac, coord_li, coord_col))
+jeu()

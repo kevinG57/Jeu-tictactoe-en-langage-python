@@ -3,10 +3,11 @@ from graphicalgrid import GraphicalGrid
 # A régler:
 # Défaut quand on tape ENTER après le message "la case n'est pas vide"
 
+# Deficnition de la taille de la grille : si ENTRER : erreur
+
 # Boucle coord ligne et colonne avec ENTER à etudier 
 
 # Changer les conditions de win : grille[0][0] INTERDIT il faut utiliser est(grille, i, j)
-
 
 # Generation de ma grille (question 1)
 
@@ -96,9 +97,8 @@ def test_taille_grille(chiffre):
     while not test_entree_chiffre(chiffre) or int(chiffre) < 3:
         if not test_entree_chiffre(chiffre):
             print("Veuillez entrer un entier")
-        else:
-            if int(chiffre) < 3:
-                print("Veuillez renter un chiffre supérieur à 2")
+        elif int(chiffre) < 3:
+            print("Veuillez renter un chiffre supérieur à 2")
         chiffre = input()
     return int(chiffre)
 
@@ -116,6 +116,8 @@ def grille_pleine(grille):
 
 
 # -------Controle si la partie est gagnee ou non------------------------------------
+
+
 
 def partie_gagnee_ligne(grille, li):  
     for i in range(taille_grille(grille)):
@@ -138,7 +140,7 @@ def partie_gagnee_diagonale_1(grille):
     return True
 
 
-def partie_gagnee_diagonale_2(grille):
+def partie_gagnee_diagonale_2(grille,):
         longeur = taille_grille(grille)
         for i in range(longeur):
             if grille[longeur-1][0] != grille[longeur-1-i][i] or est_vide(grille, longeur-1, 0):
@@ -164,18 +166,10 @@ def joueur(tour):
     else:
         return "O"
 
-def coup(joueur):
-    if joueur == "O":
-        symbole = "O"           # Inutile à supprimer
-    if joueur == "X":
-        symbole = "X"
-    return symbole
-
-
 
 # --------Vérification des entrées de col et li-----------------------------------------
 
-def def_col_li(grille, coordonnee, txt_li_col):
+def definition_col_li(grille, coordonnee, txt_li_col):
     coordonnee = input("Entrez un numéro de " + txt_li_col)                     # DEMANDER AU PROF SI OK VARIABLE
     if coordonnee != "":
         while not test_entree_chiffre(coordonnee) or not test_entree_coord(grille, int(coordonnee)):
@@ -184,14 +178,14 @@ def def_col_li(grille, coordonnee, txt_li_col):
                 print("Veuillez entrer un chiffre svp")
                 coordonnee = input("Entrez un numéro de " + txt_li_col)
             else:
-                if not test_entree_coord(grille, coordonnee):            # intendation en plus pour tester
+                if not test_entree_coord(grille, coordonnee):                       # ICI rajouter une condition < if coordonnee != "" >
                     if int(coordonnee) < 0:                                          # VOIR SI OK DE FAIRE DEUX FONCTIONS
                         print("Veuillez entrer un chiffre supperieur à 0")
-                        coordonnee = input("Entrez un numéro de " + txt_li_col)
                     if int(coordonnee) >= taille_grille(grille):
                         print("Veuillez entrer un chiffre inferieur à la longeur")
-                        coordonnee = input("Entrez un numéro de " + txt_li_col)
+                    coordonnee = input("Entrez un numéro de " + txt_li_col)
     return coordonnee
+
 
 # ---------Controle de la bonne saisie d'un chiffre---------------------------------------
 
@@ -205,7 +199,6 @@ def test_entree_chiffre(saisie):
         if drapeau == False:
             return False
     return True
-
 
 # ----------Coordonnée est-elle correct ? -------------------------------------------------
 
@@ -298,22 +291,22 @@ def jeu():
                 if annuler == "O":                                                            # Annule ou non le coup précedent
                     tour -= 1
                     suppression(tictac, grille_graphique, historique) 
-
+######################################################################################################
             if annuler != "O":
                 print("C'est au tour du joueur", joueur(tour))
-                coord_li = def_col_li(tictac, coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
+                coord_li = definition_col_li(tictac, coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
                 if coord_li != "":              # FAIRE EN PLUS PROPRE
-                    coord_col = def_col_li(tictac, coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")
+                    coord_col = definition_col_li(tictac, coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")
 
             if coord_li != "" and coord_col != "" and annuler != "O":
                 while not est_vide(tictac, int(coord_li), int(coord_col)):
                     print("La case n'est pas vide")
-                    coord_li = def_col_li(tictac, coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
-                    coord_col = def_col_li(tictac, coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :") # Si on rentre là mais qu'on tape entrer: bugg
+                    coord_li = definition_col_li(tictac, coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
+                    coord_col = definition_col_li(tictac, coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :") # Si on rentre  mais qu'on tape entrer: bugg
                 if coord_li != "" and coord_col != "":
                     ecriture(tictac, grille_graphique, int(coord_li), int(coord_col), tour, historique)
                     tour += 1
-                
+#########################################################################################################
             annuler = "N"
             coord_li = 0                            # A etudier pour faire plus propre
             coord_col = 0
