@@ -9,6 +9,8 @@ from graphicalgrid import GraphicalGrid
 # Problème de boucle quand on demande d'annuler ce coup
 # N à la question "voulez vous continuer" ne sort pas de la boucle 
 
+# Creer fonction test taille grille
+
 
 
 # Generation de ma grille (question 1)
@@ -92,6 +94,17 @@ def affiche(grille):
             print()
             print("----" * (taille-1) + "---")
 
+# ------ Creation grille --------------------------------------------
+
+def taille_grille(chiffre):
+
+    while not test_entree_chiffre(chiffre) or int(chiffre) < 3:
+        if not test_entree_chiffre(chiffre):
+            print("Veuillez entrer un entier")
+        if  int(chiffre) < 3:
+            print("Veuillez renter un chiffre supérieur à 2")
+        chiffre = input()
+    return int(chiffre)
 
 #---------Fonctions de fin de jeu (arret, gagné, nul)----------------
 
@@ -262,6 +275,7 @@ historique = []
 coord_vide = False
 
 longeur_grille = int(input("Rentrez la taille de la grille :"))
+taille_grille(longeur_grille)
 grille_graphique = GraphicalGrid(longeur_grille)
 tictac = cree_grille(longeur_grille)
 

@@ -15,3 +15,25 @@
 essai = input("ecrire")
 if essai == " ":
     print("entrer")
+
+
+def def_col_li(coordonnee, li_col):
+    coordonnee = input("Entrez un numéro de " + li_col)                     # DEMANDER AU PROF SI OK VARIABLE
+    if coordonnee != "":
+        while not test_entree_chiffre(coordonnee) or not test_entree_coord(coordonnee):
+            while not test_entree_chiffre(coordonnee):
+                print("Veuillez entrer un chiffre svp")
+                coordonnee = input("Entrez un numéro de " + li_col)
+
+            while not test_entree_coord(coordonnee):
+                if test_entree_chiffre(coordonnee):
+                    if int(coordonnee) < 0:                                          # VOIR SI OK DE FAIRE DEUX FONCTIONS
+                        print("Veuillez entrer un chiffre supperieur à 0")
+                        coordonnee = input("Entrez un numéro de " + li_col)
+                    if int(coordonnee) > taille_grille(tictac):
+                        print("Veuillez entrer un chiffre inferieur à la longeur")
+                        coordonnee = input("Entrez un numéro de " + li_col)
+
+
+        return int(coordonnee)
+    return coordonnee        drapeau = True
