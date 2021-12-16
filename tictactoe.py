@@ -3,7 +3,7 @@ from graphicalgrid import GraphicalGrid
 # BOUCLE A ETUDIER:
 # A FAIRE IMPORTANT : probleme d'entrée de coordonnée (str)
 
-# test_entree_chiffre à etudier pour decouper en "est-ce que je ne peux pas decouper en espace, +/- et chiffre"
+# test_entree_chiffre à etudier pour decouper en "est-ce que je ne peux pas decouper en espace puis +/- puis chiffre"
 
 # Les trois test O et N sont TRES BIZARRES: à etudier
 # Problème de boucle quand on demande d'annuler ce coup
@@ -96,13 +96,14 @@ def affiche(grille):
 
 # ------ Creation grille --------------------------------------------
 
-def taille_grille(chiffre):
+def test_taille_grille(chiffre):
 
     while not test_entree_chiffre(chiffre) or int(chiffre) < 3:
         if not test_entree_chiffre(chiffre):
             print("Veuillez entrer un entier")
-        if  int(chiffre) < 3:
-            print("Veuillez renter un chiffre supérieur à 2")
+        else:
+            if int(chiffre) < 3:
+                print("Veuillez renter un chiffre supérieur à 2")
         chiffre = input()
     return int(chiffre)
 
@@ -182,23 +183,24 @@ def coup(joueur):
 
 def def_col_li(coordonnee, li_col):
     coordonnee = input("Entrez un numéro de " + li_col)                     # DEMANDER AU PROF SI OK VARIABLE
-    if coordonnee != "":
-        while not test_entree_chiffre(coordonnee):
-            print("Veuillez entrer un chiffre svp")
-            coordonnee = input("Entrez un numéro de " + li_col)
+    while coordonnee != "":
+        while not test_entree_chiffre(coordonnee) or not test_entree_coord(int(coordonnee)):
 
-        while not test_entree_coord(coordonnee):
-            if int(coordonnee) < 0:                                          # VOIR SI OK DE FAIRE DEUX FONCTIONS
-                print("Veuillez entrer un chiffre supperieur à 0")
+            if not test_entree_chiffre(coordonnee):
+                print("Veuillez entrer un chiffre svp")
                 coordonnee = input("Entrez un numéro de " + li_col)
-            if int(coordonnee) > taille_grille(tictac):
-                print("Veuillez entrer un chiffre inferieur à la longeur")
-                coordonnee = input("Entrez un numéro de " + li_col)
+            else:
+                if not test_entree_coord(coordonnee):            # intendation en plus pour tester
+                    if int(coordonnee) < 0:                                          # VOIR SI OK DE FAIRE DEUX FONCTIONS
+                        print("Veuillez entrer un chiffre supperieur à 0")
+                        coordonnee = input("Entrez un numéro de " + li_col)
+                    if int(coordonnee) > taille_grille(tictac):
+                        print("Veuillez entrer un chiffre inferieur à la longeur")
+                        coordonnee = input("Entrez un numéro de " + li_col)
 
         return int(coordonnee)
 
     return coordonnee
-
 
 # ---------Controle de la bonne saisie d'un chiffre-------------------------
 
@@ -274,8 +276,7 @@ annuler = ""
 historique = []
 coord_vide = False
 
-longeur_grille = int(input("Rentrez la taille de la grille :"))
-taille_grille(longeur_grille)
+longeur_grille = test_taille_grille(input("Rentrez la taille de la grille :"))
 grille_graphique = GraphicalGrid(longeur_grille)
 tictac = cree_grille(longeur_grille)
 

@@ -37,3 +37,9 @@ def def_col_li(coordonnee, li_col):
 
         return int(coordonnee)
     return coordonnee        drapeau = True
+
+
+    longeur_grille = int(input("Rentrez la taille de la grille :"))
+taille_grille(longeur_grille)
+grille_graphique = GraphicalGrid(longeur_grille)
+tictac = cree_grille(longeur_grille)
