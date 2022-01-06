@@ -1,15 +1,14 @@
 from graphicalgrid import GraphicalGrid
 
 # A régler:
-# Défaut quand on tape ENTER après le message "la case n'est pas vide"
 
-# Deficnition de la taille de la grille : si ENTRER : erreur
+# Défaut quand on tape ENTER après le message "la case n'est pas vide"
 
 # Boucle coord ligne et colonne avec ENTER à etudier 
 
 # Changer les conditions de win : grille[0][0] INTERDIT il faut utiliser est(grille, i, j)
 
-# Generation de ma grille (question 1)
+#------------ Generation de ma grille (question 1) -------------------
 
 def cree_grille(taille):
     grille = []
@@ -22,7 +21,7 @@ def cree_grille(taille):
     return grille
 
 
-# Longeur de la grille (question 2)
+#------------ Longeur de la grille (question 2) ----------------------
 
 def taille_grille(grille):
     n = len(grille)
@@ -30,7 +29,7 @@ def taille_grille(grille):
     return n
 
 
-# Vérifie que l'on soit dans la grille
+#------------- Vérifie que l'on soit dans la grille ------------------
 
 def est_dans_grille(grille, i, j):
     if 0 <= i < taille_grille(grille) and 0 <= j < taille_grille(grille):
@@ -38,7 +37,7 @@ def est_dans_grille(grille, i, j):
     return False
 
 
-#  Vérifie si vide (Question 3)
+#------------- Vérifie si vide (Question 3) --------------------------
 
 def est_vide(grille, i, j):
     if est_dans_grille(grille, i, j) and grille[i][j] == " ":
@@ -46,7 +45,7 @@ def est_vide(grille, i, j):
     return False
     
 
-# Ecrire un O ou un X (Question 4)
+#------------- Ecrire un O ou un X (Question 4) ----------------------
 
 
 def ecrire(grille, i, j, symbole):
@@ -54,14 +53,14 @@ def ecrire(grille, i, j, symbole):
         grille[i][j] = symbole
 
 
-# Supprimer un X ou un O (Question 5)
+#------------- Supprimer un X ou un O (Question 5) --------------------
 
 def supprimer(grille, i, j):
     if est_dans_grille(grille, i, j) and not est_vide(grille, i, j):
         grille[i][j] = " "
 
 
-# Vérifie si la case est X ou O (Question 6)
+#-------------- Vérifie si la case est X ou O (Question 6)-------------
 
 def est(grille, i, j, symbole):
     if est_dans_grille(grille, i, j):
@@ -69,7 +68,7 @@ def est(grille, i, j, symbole):
     return False
 
 
-# Affichage de la grille (Question 7)
+#------------- Affichage de la grille (Question 7) -------------------
 
 def affiche(grille):
     taille = taille_grille(grille)
@@ -94,9 +93,11 @@ def affiche(grille):
 
 def test_taille_grille(chiffre):
 
-    while not test_entree_chiffre(chiffre) or int(chiffre) < 3:
+    while not test_entree_chiffre(chiffre) or chiffre == "" or int(chiffre) < 3:
         if not test_entree_chiffre(chiffre):
             print("Veuillez entrer un entier")
+        elif chiffre == "":
+            print("Veuillez rentrer un chiffre pour la taille de votre grille")
         elif int(chiffre) < 3:
             print("Veuillez renter un chiffre supérieur à 2")
         chiffre = input()
@@ -172,14 +173,14 @@ def joueur(tour):
 def definition_col_li(grille, coordonnee, txt_li_col):
     coordonnee = input("Entrez un numéro de " + txt_li_col)                     # DEMANDER AU PROF SI OK VARIABLE
     if coordonnee != "":
-        while not test_entree_chiffre(coordonnee) or not test_entree_coord(grille, int(coordonnee)):
+        while coordonnee != "" and not test_entree_chiffre(coordonnee) or not test_entree_coord(grille, int(coordonnee)):
 
             if not test_entree_chiffre(coordonnee):
                 print("Veuillez entrer un chiffre svp")
                 coordonnee = input("Entrez un numéro de " + txt_li_col)
             else:
                 if not test_entree_coord(grille, coordonnee):                       # ICI rajouter une condition < if coordonnee != "" >
-                    if int(coordonnee) < 0:                                          # VOIR SI OK DE FAIRE DEUX FONCTIONS
+                    if int(coordonnee) < 0:                                         # VOIR SI OK DE FAIRE DEUX FONCTIONS
                         print("Veuillez entrer un chiffre supperieur à 0")
                     if int(coordonnee) >= taille_grille(grille):
                         print("Veuillez entrer un chiffre inferieur à la longeur")
