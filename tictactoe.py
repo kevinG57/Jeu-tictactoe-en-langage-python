@@ -93,6 +93,12 @@ def affiche(grille):
 
 # ------ Creation grille ----------------------------------------------------------
 
+def creation_de_grille():    
+    longeur_grille = test_taille_grille(input("Rentrez la taille de la grille :"))
+    grille_graphique = GraphicalGrid(longeur_grille)
+    tictac = cree_grille(longeur_grille)
+    return tictac, grille_graphique
+
 def test_taille_grille(chiffre):
 
     while not test_entree_chiffre(chiffre) or chiffre == "" or int(chiffre) < 3:
@@ -278,9 +284,10 @@ def jeu():
     annuler = ""
     historique = []
 
-    longeur_grille = test_taille_grille(input("Rentrez la taille de la grille :"))
-    grille_graphique = GraphicalGrid(longeur_grille)
-    tictac = cree_grille(longeur_grille)
+    tictac, grille_graphique = creation_de_grille()
+    # longeur_grille = test_taille_grille(input("Rentrez la taille de la grille :"))
+    # grille_graphique = GraphicalGrid(longeur_grille)
+    # tictac = cree_grille(longeur_grille)
 
     while partie_continue(tictac, coord_li, coord_col, reponse):                               # Boucle du jeu
 
