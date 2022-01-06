@@ -4,7 +4,9 @@ from graphicalgrid import GraphicalGrid
 
 # Défaut quand on tape ENTER après le message "la case n'est pas vide"
 
-# Boucle coord ligne et colonne avec ENTER à etudier 
+# Boucle coord ligne et colonne avec ENTER à etudier
+
+# Vérif d'un entier : "++" NOK  AJOUT D'UN DRAPEAU SIGNE dans text_entree_chiffre
 
 # Changer les conditions de win : grille[0][0] INTERDIT il faut utiliser est(grille, i, j)
 
@@ -99,6 +101,9 @@ def creation_de_grille():
     tictac = cree_grille(longeur_grille)
     return tictac, grille_graphique
 
+
+# ------ Test taille grille -------------------------------------------------------
+
 def test_taille_grille(chiffre):
 
     while not test_entree_chiffre(chiffre) or chiffre == "" or int(chiffre) < 3:
@@ -179,9 +184,9 @@ def joueur(tour):
 # --------Vérification des entrées de col et li-----------------------------------------
 
 def definition_col_li(grille, coordonnee, txt_li_col):
-    coordonnee = input("Entrez un numéro de " + txt_li_col)                     # DEMANDER AU PROF SI OK VARIABLE
+    coordonnee = input("Entrez un numéro de " + txt_li_col)
     if coordonnee != "":
-        while coordonnee != "" and not test_entree_chiffre(coordonnee) or not test_entree_coord(grille, int(coordonnee)):
+        while coordonnee != "" and not test_entree_chiffre(coordonnee) or not test_entree_coord(grille, coordonnee): # J'ai retiré int() de coordonnee
 
             if not test_entree_chiffre(coordonnee):
                 print("Veuillez entrer un chiffre svp")
@@ -200,7 +205,7 @@ def definition_col_li(grille, coordonnee, txt_li_col):
 
 def test_entree_chiffre(saisie):
     chiffres = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", " "]
-    for i in str(saisie):
+    for i in saisie:
         drapeau = False
         for j in chiffres:
             if i == j:
@@ -208,6 +213,18 @@ def test_entree_chiffre(saisie):
         if drapeau == False:
             return False
     return True
+
+def test_entree_chiffre(saisie):
+    chiffres = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    signes = ["+", "-"]
+    for i in saisie:
+        drapeau = False
+        signe = False
+        for j in chiffres:
+            if i == j:
+
+    return True
+
 
 # ----------Coordonnée est-elle correct ? -------------------------------------------------
 
@@ -285,9 +302,7 @@ def jeu():
     historique = []
 
     tictac, grille_graphique = creation_de_grille()
-    # longeur_grille = test_taille_grille(input("Rentrez la taille de la grille :"))
-    # grille_graphique = GraphicalGrid(longeur_grille)
-    # tictac = cree_grille(longeur_grille)
+
 
     while partie_continue(tictac, coord_li, coord_col, reponse):                               # Boucle du jeu
 
@@ -301,22 +316,22 @@ def jeu():
                 if annuler == "O":                                                            # Annule ou non le coup précedent
                     tour -= 1
                     suppression(tictac, grille_graphique, historique) 
-######################################################################################################
+
             if annuler != "O":
                 print("C'est au tour du joueur", joueur(tour))
                 coord_li = definition_col_li(tictac, coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
-                if coord_li != "":              # FAIRE EN PLUS PROPRE
+                if coord_li != "":
                     coord_col = definition_col_li(tictac, coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")
 
-            if coord_li != "" and coord_col != "" and annuler != "O":
-                while not est_vide(tictac, coord_li, coord_col) :
-                    print("La case n'est pas vide")
-                    coord_li = definition_col_li(tictac, coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
-                    coord_col = definition_col_li(tictac, coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :") # Si on rentre  mais qu'on tape entrer: bugg
-                if coord_li != "" and coord_col != "":
-                    ecriture(tictac, grille_graphique, int(coord_li), int(coord_col), tour, historique)
-                    tour += 1
-#########################################################################################################
+                if coord_li != "" and coord_col != "" and annuler != "O":
+                    while not est_vide(tictac, coord_li, coord_col) :
+                        print("La case n'est pas vide")
+                        coord_li = definition_col_li(tictac, coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
+                        coord_col = definition_col_li(tictac, coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :") # Si on rentre  mais qu'on tape entrer: bugg
+                    if coord_li != "" and coord_col != "":
+                        ecriture(tictac, grille_graphique, int(coord_li), int(coord_col), tour, historique)
+                        tour += 1
+
             annuler, coord_li, coord_col = "N", 0, 0
 
     fin_de_jeu(tictac, coord_li, coord_col, reponse, tour)
