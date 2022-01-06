@@ -40,6 +40,8 @@ def est_dans_grille(grille, i, j):
 #------------- Vérifie si vide (Question 3) --------------------------
 
 def est_vide(grille, i, j):
+    i = int(i)
+    j = int(j)
     if est_dans_grille(grille, i, j) and grille[i][j] == " ":
             return True
     return False
@@ -129,24 +131,24 @@ def partie_gagnee_ligne(grille, li):
 
 def partie_gagnee_col(grille,col):
     for i in range(taille_grille(grille)):
-            if grille[0][col] != grille[taille_grille(grille)-i-1][col] or est_vide(grille, 0, col):
-                return False
+        if grille[0][col] != grille[taille_grille(grille)-i-1][col] or est_vide(grille, 0, col):
+            return False
     return True
 
 
 def partie_gagnee_diagonale_1(grille):
     for i in range(taille_grille(grille)):
-            if grille[0][0] != grille[i][i] or est_vide(grille, 0, 0):
-                return False
+        if grille[0][0] != grille[i][i] or est_vide(grille, 0, 0):
+            return False
     return True
 
 
 def partie_gagnee_diagonale_2(grille,):
-        longeur = taille_grille(grille)
-        for i in range(longeur):
-            if grille[longeur-1][0] != grille[longeur-1-i][i] or est_vide(grille, longeur-1, 0):
-                return False
-        return True
+    longeur = taille_grille(grille)
+    for i in range(longeur):
+        if grille[longeur-1][0] != grille[longeur-1-i][i] or est_vide(grille, longeur-1, 0):
+            return False
+    return True
 
 
 def partie_gagnee(grille, i, j):
@@ -300,7 +302,7 @@ def jeu():
                     coord_col = definition_col_li(tictac, coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")
 
             if coord_li != "" and coord_col != "" and annuler != "O":
-                while not est_vide(tictac, int(coord_li), int(coord_col)):
+                while not est_vide(tictac, coord_li, coord_col) :
                     print("La case n'est pas vide")
                     coord_li = definition_col_li(tictac, coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
                     coord_col = definition_col_li(tictac, coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :") # Si on rentre  mais qu'on tape entrer: bugg
@@ -308,9 +310,7 @@ def jeu():
                     ecriture(tictac, grille_graphique, int(coord_li), int(coord_col), tour, historique)
                     tour += 1
 #########################################################################################################
-            annuler = "N"
-            coord_li = 0                            # A etudier pour faire plus propre
-            coord_col = 0
+            annuler, coord_li, coord_col = "N", 0, 0
 
     fin_de_jeu(tictac, coord_li, coord_col, reponse, tour)
     grille_graphique.wait_quit()
