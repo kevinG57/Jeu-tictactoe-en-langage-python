@@ -149,7 +149,7 @@ def partie_gagnee_ligne2(grille, li, tour):
 def partie_gagnee_col2(grille,col, tour):
     longueur = taille_grille(grille)
     for i in range(longueur):
-        if est(grille, longueur-i-1, col, joueur(tour)) or est_vide(grille, 0, col):
+        if not est(grille, longueur-i-1, col, joueur(tour)) or est_vide(grille, 0, col):
             return False
     return True
 
@@ -157,14 +157,14 @@ def partie_gagnee_col2(grille,col, tour):
 def partie_gagnee_diagonale_12(grille, tour):
     longueur = taille_grille(grille)
     for i in range(longueur):
-        if est(grille, i, i, joueur(tour)) or est_vide(grille, 0, 0):
+        if not est(grille, i, i, joueur(tour)) or est_vide(grille, 0, 0):
             return False
     return True
 
 def partie_gagnee_diagonale_22(grille):
     longeur = taille_grille(grille)
     for i in range(longeur):
-        if grille[longeur-1][0] != grille[longeur-1-i][i] or est_vide(grille, longeur-1, 0):
+        if not grille[longeur-1][0] != grille[longeur-1-i][i] or est_vide(grille, longeur-1, 0):
             return False
     return True
 
