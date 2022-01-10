@@ -222,7 +222,8 @@ def test_entree_chiffre(saisie):
         signe = False
         for j in chiffres:
             if i == j:
-
+                drapeau = True
+        
     return True
 
 
