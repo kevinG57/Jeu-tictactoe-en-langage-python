@@ -7,7 +7,7 @@ from graphicalgrid import GraphicalGrid
 # Boucle coord ligne et colonne avec ENTER à etudier
 
 #PARTIE GAGNEE EN COURS !!!!!!!
-# Changer les conditions de win : grille[0][0] INTERDIT il faut utiliser est(grille, i, j)
+# presque bon à tester diagonale 2 puis effacer les commentaires
 
 #------------ Generation de ma grille (question 1) -------------------
 
@@ -127,27 +127,16 @@ def grille_pleine(grille):
 
 
 # -------Controle si la partie est gagnee ------------------------------------
-def joueur(tour):
-    if tour % 2:
-        return "X"
-    else:
-        return "O"
-def est(grille, i, j, symbole):
-    if est_dans_grille(grille, i, j):
-        return symbole == grille[i][j]
-    return False
 
-
-def partie_gagnee_ligne2(grille, li, tour): 
+def partie_gagnee_ligne(grille, li, tour): 
     longueur = taille_grille(grille)
     for i in range(longueur):
-        print("ligne: tour", tour, "joueur", joueur(tour))
         if not est(grille, li, longueur-i-1, joueur(tour-1)) or est_vide(grille, li, 0):
             return False
     return True
 
 
-def partie_gagnee_col2(grille,col, tour):
+def partie_gagnee_col(grille,col, tour):
     longueur = taille_grille(grille)
     for i in range(longueur):
         if not est(grille, longueur-i-1, col, joueur(tour-1)) or est_vide(grille, 0, col):
@@ -155,52 +144,24 @@ def partie_gagnee_col2(grille,col, tour):
     return True
 
 
-def partie_gagnee_diagonale_12(grille, tour):
+def partie_gagnee_diagonale_1(grille, tour):
     longueur = taille_grille(grille)
     for i in range(longueur):
         if not est(grille, i, i, joueur(tour-1)) or est_vide(grille, 0, 0):
             return False
     return True
 
-def partie_gagnee_diagonale_22(grille):
-    longeur = taille_grille(grille)
-    for i in range(longeur):
-        if not grille[longeur-1][0] != grille[longeur-1-i][i] or est_vide(grille, longeur-1, 0):
+
+def partie_gagnee_diagonale_2(grille, tour):
+    longueur = taille_grille(grille)
+    for i in range(longueur):
+        if not est(grille, longueur-i-1, i, joueur(tour-1)) or est_vide(grille, longueur-1, 0):
             return False
     return True
 
 
-# def partie_gagnee_ligne(grille, li):  
-#     for i in range(taille_grille(grille)):
-#         if grille[li][0] != grille[li][taille_grille(grille)-i-1] or est_vide(grille, li, 0):
-#             return False
-#     return True
-
-
-# def partie_gagnee_col(grille,col):
-#     for i in range(taille_grille(grille)):
-#         if grille[0][col] != grille[taille_grille(grille)-i-1][col] or est_vide(grille, 0, col):
-#             return False
-#     return True
-
-
-# def partie_gagnee_diagonale_1(grille):
-#     for i in range(taille_grille(grille)):
-#         if grille[0][0] != grille[i][i] or est_vide(grille, 0, 0):
-#             return False
-#     return True
-
-
-# def partie_gagnee_diagonale_2(grille):
-#     longeur = taille_grille(grille)
-#     for i in range(longeur):
-#         if grille[longeur-1][0] != grille[longeur-1-i][i] or est_vide(grille, longeur-1, 0):
-#             return False
-#     return True
-
-
 def partie_gagnee(grille, i, j, tour):
-    return partie_gagnee_ligne2(grille, i, tour) or partie_gagnee_col2(grille, j, tour) or partie_gagnee_diagonale_12(grille, tour) or partie_gagnee_diagonale_22(grille)
+    return partie_gagnee_ligne(grille, i, tour) or partie_gagnee_col(grille, j, tour) or partie_gagnee_diagonale_1(grille, tour) or partie_gagnee_diagonale_2(grille, tour)
 
 
 #-------------------- Partie finie ----------------------------------------------------
@@ -208,14 +169,6 @@ def partie_gagnee(grille, i, j, tour):
 def partie_continue(grille, coord_li, coord_col, reponse, tour): 
     return not grille_pleine(grille) and not partie_gagnee(grille, coord_li, coord_col, tour) and continuer_de_jouer(reponse)
 
-# def partie_gagnee(grille, i, j):
-#     return partie_gagnee_ligne2(grille, i) or partie_gagnee_col2(grille, j) or partie_gagnee_diagonale_12(grille) or partie_gagnee_diagonale_22(grille)
-
-
-# #-------------------- Partie finie ----------------------------------------------------
-
-# def partie_continue(grille, coord_li, coord_col, reponse): 
-#     return not grille_pleine(grille) and not partie_gagnee(grille, coord_li, coord_col) and continuer_de_jouer(reponse)
 
 # ------------- Qui joue ? -------------------------------------------------------------
 
@@ -338,10 +291,10 @@ def suppression(grille, grille_graph, histo):
 # -------------- Resultat de la partie -----------------------------------------------------
 
 def fin_de_jeu(grille, coord_li, coord_col, reponse, tour):
-    if grille_pleine(grille):
-        print("egalité !")
-    elif partie_gagnee(grille, coord_li, coord_col, tour):
+    if partie_gagnee(grille, coord_li, coord_col, tour):
         print("Le joueur", joueur(tour+1), "a gagné")
+    elif grille_pleine(grille):
+        print("egalité !")
     elif not continuer_de_jouer(reponse):
         print("vous avez arreté de jouer")
 
