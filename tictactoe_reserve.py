@@ -6,8 +6,6 @@ from graphicalgrid import GraphicalGrid
 
 # Boucle coord ligne et colonne avec ENTER à etudier
 
-# Vérif d'un entier : "++" NOK  AJOUT D'UN DRAPEAU SIGNE dans text_entree_chiffre
-
 # Changer les conditions de win : grille[0][0] INTERDIT il faut utiliser est(grille, i, j)
 
 #------------ Generation de ma grille (question 1) -------------------
@@ -42,8 +40,7 @@ def est_dans_grille(grille, i, j):
 #------------- Vérifie si vide (Question 3) --------------------------
 
 def est_vide(grille, i, j):
-    i = int(i)
-    j = int(j)
+    i, j = int(i), int(j)
     if est_dans_grille(grille, i, j) and grille[i][j] == " ":
             return True
     return False
@@ -93,6 +90,7 @@ def affiche(grille):
             print()
             print("----" * (taille-1) + "---")
 
+
 # ------ Creation grille ----------------------------------------------------------
 
 def creation_de_grille():    
@@ -116,10 +114,8 @@ def test_taille_grille(chiffre):
         chiffre = input()
     return int(chiffre)
 
-#---------Fonctions de fin de jeu (arret, gagné, nul)-------------------------------
 
-
-# Controle de grille pleine (pour arret de jeu)
+# ---------- Controle de grille pleine (pour arret de jeu) ------------------------
 
 def grille_pleine(grille):
     for i in range(taille_grille(grille)):
@@ -129,9 +125,7 @@ def grille_pleine(grille):
     return True
 
 
-# -------Controle si la partie est gagnee ou non------------------------------------
-
-
+# -------Controle si la partie est gagnee ------------------------------------
 
 def partie_gagnee_ligne(grille, li):  
     for i in range(taille_grille(grille)):
@@ -166,13 +160,13 @@ def partie_gagnee(grille, i, j):
     return partie_gagnee_ligne(grille, i) or partie_gagnee_col(grille, j) or partie_gagnee_diagonale_1(grille) or partie_gagnee_diagonale_2(grille)
 
 
-#--------------------Partie finie----------------------------------------------------
+#-------------------- Partie finie ----------------------------------------------------
 
 def partie_continue(grille, coord_li, coord_col, reponse): 
     return not grille_pleine(grille) and not partie_gagnee(grille, coord_li, coord_col) and continuer_de_jouer(reponse)
 
 
-# -------------Qui joue ?-------------------------------------------------------------
+# ------------- Qui joue ? -------------------------------------------------------------
 
 def joueur(tour):
     if tour % 2:
@@ -181,7 +175,7 @@ def joueur(tour):
         return "O"
 
 
-# --------Vérification des entrées de col et li-----------------------------------------
+# -------- Vérification des entrées de col et li -----------------------------------------
 
 def definition_col_li(grille, coordonnee, txt_li_col):
     coordonnee = input("Entrez un numéro de " + txt_li_col)
@@ -201,10 +195,30 @@ def definition_col_li(grille, coordonnee, txt_li_col):
     return coordonnee
 
 
-# ---------Controle de la bonne saisie d'un chiffre---------------------------------------
+# --------- Controle de la bonne saisie d'un chiffre -------------------------------------
 
 def test_entree_chiffre(saisie):
     chiffres = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", " "]
+    signe_flag = 0
+    chiffre_flag = 0
+    for i in saisie:
+        drapeau = False
+        for j in chiffres:
+            if i == j:
+                drapeau = True
+                if i == "+" or i == "-":
+                    signe_flag += 1
+                elif i != "+" or i != "-" or i != " ":
+                    chiffre_flag += 1
+                if chiffre_flag > 0 and (i == "+" or i == "-"):
+                    return False
+        if drapeau == False or signe_flag > 1 :
+            return False
+    return True
+
+
+def test_entier(saisie):
+    chiffres = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
     for i in saisie:
         drapeau = False
         for j in chiffres:
@@ -213,18 +227,8 @@ def test_entree_chiffre(saisie):
         if drapeau == False:
             return False
     return True
-
-def test_entree_chiffre(saisie):
-    chiffres = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-    signes = ["+", "-"]
-    for i in saisie:
-        drapeau = False
-        signe = False
-        for j in chiffres:
-            if i == j:
-                drapeau = True
-        
-    return True
+    
+                
 
 
 # ----------Coordonnée est-elle correct ? -------------------------------------------------
@@ -264,20 +268,20 @@ def test_O_N(reponse, question):
     return reponse
 
 
-# ------- Suppression du coup précédent ----------------------------------------------------
-
-def suppression(grille, grille_graph, histo):
-    dernier_coup = histo.pop() 
-    supprimer(grille, dernier_coup[0], dernier_coup[1])
-    grille_graph.erase(dernier_coup[0], dernier_coup[1])  
-
-
 # -------------- Ecriture d'un coup joué ---------------------------------------------------
 
 def ecriture(grille, grille_graph, coord_li, coord_col, tour, histo):
     histo.append((coord_li, coord_col, joueur(tour)))
     ecrire(grille, coord_li, coord_col, joueur(tour))
     grille_graph.write(coord_li, coord_col, joueur(tour))
+
+
+# ------- Suppression du coup précédent ----------------------------------------------------
+
+def suppression(grille, grille_graph, histo):
+    dernier_coup = histo.pop() 
+    supprimer(grille, dernier_coup[0], dernier_coup[1])
+    grille_graph.erase(dernier_coup[0], dernier_coup[1])  
 
 
 # -------------- Resultat de la partie -----------------------------------------------------
@@ -304,17 +308,16 @@ def jeu():
 
     tictac, grille_graphique = creation_de_grille()
 
-
     while partie_continue(tictac, coord_li, coord_col, reponse):                               # Boucle du jeu
 
         reponse = test_O_N(input("On continue ? [O]ui ou [N]on :"), 1)
         
         if reponse == "O":
 
-            if len(historique) > 0:                                                           # Affiche l'historique si il existe
-                print("dernier coup joué =", historique[tour-2])
+            if len(historique) > 0:
+                print("dernier coup joué =", historique[tour-2])                               # Affiche l'historique si il existe
                 annuler = test_O_N(input("Voulez-vous annuler ce coup ? [O]ui ou [N]on :"), 2) 
-                if annuler == "O":                                                            # Annule ou non le coup précedent
+                if annuler == "O":                                                             # Annule ou non le coup précedent
                     tour -= 1
                     suppression(tictac, grille_graphique, historique) 
 
@@ -328,12 +331,12 @@ def jeu():
                     while not est_vide(tictac, coord_li, coord_col) :
                         print("La case n'est pas vide")
                         coord_li = definition_col_li(tictac, coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
-                        coord_col = definition_col_li(tictac, coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :") # Si on rentre  mais qu'on tape entrer: bugg
+                        coord_col = definition_col_li(tictac, coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")
                     if coord_li != "" and coord_col != "":
                         ecriture(tictac, grille_graphique, int(coord_li), int(coord_col), tour, historique)
                         tour += 1
 
-            annuler, coord_li, coord_col = "N", 0, 0
+            annuler, coord_li, coord_col = "N", 0, 0                                        # Réinitialisation en fin de boucle
 
     fin_de_jeu(tictac, coord_li, coord_col, reponse, tour)
     grille_graphique.wait_quit()
