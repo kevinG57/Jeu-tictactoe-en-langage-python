@@ -1,5 +1,5 @@
 from graphicalgrid import GraphicalGrid
-# actif
+
 
 #------------ Generation de ma grille (question 1) -------------------
 
@@ -118,7 +118,7 @@ def grille_pleine(grille):
     return True
 
 
-# -------Controle si la partie est gagnee ------------------------------------
+# -------Controle si la partie est gagnee (lignes, colonnes et diagonales) ------------------------------------
 
 def partie_gagnee_ligne(grille, li, tour): 
     longueur = taille_grille(grille)
@@ -141,7 +141,7 @@ def partie_gagnee_diagonale_1(grille, tour):
     for i in range(longueur):
         if not est(grille, i, i, joueur(tour-1)) or est_vide(grille, 0, 0):
             return False
-    return True
+    return True 
 
 
 def partie_gagnee_diagonale_2(grille, tour):
@@ -170,7 +170,7 @@ def joueur(tour):
     else:
         return "O"
 
-# -------- Vérification différent d'ENTRER -------------------------------------------------
+# -------- Vérification que la saisie est différent d'ENTRER -------------------------------------------------
 
 def pas_entrer(saisie):
     return saisie != ""
@@ -294,7 +294,7 @@ def jeu():
     coord_col = 0
     reponse = "O"
     annuler = ""
-    historique = []
+    historique = []                                                                            # Définition des différentes variables
 
     tictac, grille_graphique = creation_de_grille()
 
@@ -304,14 +304,14 @@ def jeu():
         
         if reponse == "O":
 
-            if len(historique) > 0:
-                print("dernier coup joué =", historique[tour-2])                               # Affiche l'historique si il existe
+            if len(historique) > 0:                                                            # Affichage de l'historique et annulation du coup
+                print("dernier coup joué =", historique[tour-2])                               
                 annuler = test_O_N(input("Voulez-vous annuler ce coup ? [O]ui ou [N]on :"), 2) 
-                if annuler == "O":                                                             # Annule ou non le coup précedent
+                if annuler == "O":
                     tour -= 1
                     suppression(tictac, grille_graphique, historique) 
 
-            if annuler != "O":
+            if annuler != "O":                                                                 # Si on n'a pas répondu O à annuler, on demande la ligne et colonne à jouer
                 print("C'est au tour du joueur", joueur(tour))
                 coord_li = definition_col_li(tictac, coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
                 if pas_entrer(coord_li):
@@ -325,7 +325,7 @@ def jeu():
                     ecriture(tictac, grille_graphique, int(coord_li), int(coord_col), tour, historique)
                     tour += 1
 
-            annuler, coord_li, coord_col = "N", 0, 0                                        # Réinitialisation en fin de boucle
+            annuler, coord_li, coord_col = "N", 0, 0                                        # Réinitialisation des variables en fin de boucle
 
     fin_de_jeu(tictac, coord_li, coord_col, reponse, tour)
     grille_graphique.wait_quit()
