@@ -1,5 +1,5 @@
 from graphicalgrid import GraphicalGrid
-
+# actif
 
 #------------ Generation de ma grille (question 1) -------------------
 
