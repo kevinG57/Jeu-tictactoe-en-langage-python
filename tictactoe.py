@@ -198,6 +198,31 @@ def definition_col_li(grille, coordonnee, txt_li_col):
 
 # --------- Controle de la bonne saisie d'un chiffre -------------------------------------
 
+# def test_entree_chiffre(saisie):
+#     chiffres = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", " "]
+#     signe_flag = 0
+#     chiffre_flag = 0
+#     if saisie == "+" or saisie == "-":
+#         return False
+#     else:
+#         for i in saisie:
+#             drapeau = False
+#             for j in chiffres:
+#                 if i == j:
+#                     drapeau = True
+#                     if i == "+" or i == "-":
+#                         signe_flag += 1
+#                     elif i != "+" or i != "-" or i != " ":
+#                         chiffre_flag += 1
+#                     if chiffre_flag > 0 and (i == "+" or i == "-"):
+#                         return False
+#             if drapeau == False or signe_flag > 1 :
+#                 return False
+#         return True
+
+
+# Test: 
+
 def test_entree_chiffre(saisie):
     chiffres = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", " "]
     signe_flag = 0
@@ -207,18 +232,18 @@ def test_entree_chiffre(saisie):
     else:
         for i in saisie:
             drapeau = False
-            for j in chiffres:
-                if i == j:
-                    drapeau = True
-                    if i == "+" or i == "-":
-                        signe_flag += 1
-                    elif i != "+" or i != "-" or i != " ":
-                        chiffre_flag += 1
-                    if chiffre_flag > 0 and (i == "+" or i == "-"):
-                        return False
+            if i in chiffres:
+                drapeau = True
+                if i == "+" or i == "-":
+                    signe_flag += 1
+                elif i != "+" or i != "-" or i != " ":
+                    chiffre_flag += 1
+                if chiffre_flag > 0 and (i == "+" or i == "-"):
+                    return False
             if drapeau == False or signe_flag > 1 :
                 return False
         return True
+
 
 
 # ----------Coordonnée est-elle correct ? -------------------------------------------------
