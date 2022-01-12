@@ -170,13 +170,18 @@ def joueur(tour):
     else:
         return "O"
 
+# -------- Vérification différent d'ENTRER -------------------------------------------------
+
+def pas_entrer(saisie):
+    return saisie != ""
 
 # -------- Vérification des entrées de col et li -----------------------------------------
 
+
 def definition_col_li(grille, coordonnee, txt_li_col):
     coordonnee = input("Entrez un numéro de " + txt_li_col)
-    if coordonnee != "":
-        while coordonnee != "" and not test_entree_chiffre(coordonnee) or not test_entree_coord(grille, coordonnee):
+    if pas_entrer(coordonnee):
+        while pas_entrer(coordonnee) and not test_entree_chiffre(coordonnee) or not test_entree_coord(grille, coordonnee):
 
             if not test_entree_chiffre(coordonnee):
                 print("Veuillez entrer un chiffre svp")
@@ -309,14 +314,14 @@ def jeu():
             if annuler != "O":
                 print("C'est au tour du joueur", joueur(tour))
                 coord_li = definition_col_li(tictac, coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
-                if coord_li != "":
+                if pas_entrer(coord_li):
                     coord_col = definition_col_li(tictac, coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")
 
-                while (coord_li != "" and coord_col != "") and not est_vide(tictac, coord_li, coord_col) :
+                while (pas_entrer(coord_li) and pas_entrer(coord_col)) and not est_vide(tictac, coord_li, coord_col) :
                     print("La case n'est pas vide")
                     coord_li = definition_col_li(tictac, coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
                     coord_col = definition_col_li(tictac, coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")
-                if coord_li != "" and coord_col != "":
+                if pas_entrer(coord_li) and pas_entrer(coord_col):
                     ecriture(tictac, grille_graphique, int(coord_li), int(coord_col), tour, historique)
                     tour += 1
 
