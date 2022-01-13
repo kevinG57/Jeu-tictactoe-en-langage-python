@@ -178,7 +178,7 @@ def pas_entrer(saisie):
 # -------- Vérification des entrées de col et li -----------------------------------------
 
 
-def definition_col_li(grille, coordonnee, txt_li_col):
+def definition_col_li(grille, coordonnee, txt_li_col):                                 # Fonction un peu compliquée...
     coordonnee = input("Entrez un numéro de " + txt_li_col)
     if pas_entrer(coordonnee):
         while pas_entrer(coordonnee) and not test_entree_chiffre(coordonnee) or not test_entree_coord(grille, coordonnee):
@@ -224,24 +224,24 @@ def definition_col_li(grille, coordonnee, txt_li_col):
 # Test: 
 
 def test_entree_chiffre(saisie):
-    chiffres = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", " "]
-    signe_flag = 0
+    chiffres = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", " "]
+    signes = ["+", "-"]
     chiffre_flag = 0
-    if saisie == "+" or saisie == "-":
+    signe_flag = 0
+    non_chiffre_flag = 0
+    for i in saisie:
+            if i in chiffres:
+                chiffre_flag += 1
+            elif i in signes:
+                signe_flag += 1
+            else:
+                return False
+    print("chiffres:", chiffre_flag, "signes:", signe_flag, "autres:", non_chiffre_flag)
+    if signe_flag > 1 or non_chiffre_flag > 0:
+        print("non ok")
         return False
     else:
-        for i in saisie:
-            drapeau = False
-            if i in chiffres:
-                drapeau = True
-                if i == "+" or i == "-":
-                    signe_flag += 1
-                elif i != "+" or i != "-" or i != " ":
-                    chiffre_flag += 1
-                if chiffre_flag > 0 and (i == "+" or i == "-"):
-                    return False
-            if drapeau == False or signe_flag > 1 :
-                return False
+        print("ok")
         return True
 
 
