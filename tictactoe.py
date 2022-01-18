@@ -196,7 +196,7 @@ def definition_col_li(grille, coordonnee, txt_li_col):                          
     return coordonnee
 
 
-# --------- Controle de la bonne saisie d'un chiffre -------------------------------------
+# --------- Controle de la bonne saisie d'un chiffre -------------------------------------      # ICI en cours
 
 # def test_entree_chiffre(saisie):
 #     chiffres = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", " "]
@@ -223,25 +223,44 @@ def definition_col_li(grille, coordonnee, txt_li_col):                          
 
 # Test: 
 
-def test_entree_chiffre(saisie):
-    chiffres = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", " "]
-    signes = ["+", "-"]
+
+def est_chiffre(saisie):
+    chiffres = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
     chiffre_flag = 0
-    signe_flag = 0
-    non_chiffre_flag = 0
     for i in saisie:
-            if i in chiffres:
-                chiffre_flag += 1
-            elif i in signes:
-                signe_flag += 1
-            else:
-                return False
-    print("chiffres:", chiffre_flag, "signes:", signe_flag, "autres:", non_chiffre_flag)
-    if signe_flag > 1 or non_chiffre_flag > 0:
-        print("non ok")
+        if i in chiffres:
+            chiffre_flag += 1
         return False
     else:
-        print("ok")
+        return True
+
+def est_signe_multiple(saisie):
+    signes = ["+", "-"]
+    signe_flag = 0
+    for i in saisie:
+            if i in signes:
+                signe_flag += 1
+    if signe_flag > 1:
+        return False
+    else:
+        return True
+
+
+def est_espace(saisie):
+    return saisie == " "
+        
+
+def est_chiffre_puis_signe(saisie):
+    for i in saisie:
+        if est_chiffre(i) and est_signe_multiple(i+1):
+            return True
+    return False
+
+
+def test_entree_chiffre(saisie):
+    if est_signe_multiple(saisie) or est_chiffre_puis_signe(saisie):
+        return False
+    else:
         return True
 
 
