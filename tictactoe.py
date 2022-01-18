@@ -198,70 +198,70 @@ def definition_col_li(grille, coordonnee, txt_li_col):                          
 
 # --------- Controle de la bonne saisie d'un chiffre -------------------------------------      # ICI en cours
 
-# def test_entree_chiffre(saisie):
-#     chiffres = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", " "]
-#     signe_flag = 0
-#     chiffre_flag = 0
-#     if saisie == "+" or saisie == "-":
-#         return False
-#     else:
-#         for i in saisie:
-#             drapeau = False
-#             for j in chiffres:
-#                 if i == j:
-#                     drapeau = True
-#                     if i == "+" or i == "-":
-#                         signe_flag += 1
-#                     elif i != "+" or i != "-" or i != " ":
-#                         chiffre_flag += 1
-#                     if chiffre_flag > 0 and (i == "+" or i == "-"):
-#                         return False
-#             if drapeau == False or signe_flag > 1 :
-#                 return False
-#         return True
+def test_entree_chiffre(saisie):
+    chiffres = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", " "]
+    signe_flag = 0
+    chiffre_flag = 0
+    if saisie == "+" or saisie == "-":
+        return False
+    else:
+        for i in saisie:
+            drapeau = False
+            for j in chiffres:
+                if i == j:
+                    drapeau = True
+                    if i == "+" or i == "-":
+                        signe_flag += 1
+                    elif i != "+" or i != "-" or i != " ":
+                        chiffre_flag += 1
+                    if chiffre_flag > 0 and (i == "+" or i == "-"):
+                        return False
+            if drapeau == False or signe_flag > 1 :
+                return False
+        return True
 
 
 # Test: 
 
 
-def est_chiffre(saisie):
-    chiffres = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-    chiffre_flag = 0
-    for i in saisie:
-        if i in chiffres:
-            chiffre_flag += 1
-        return False
-    else:
-        return True
+# def est_chiffre(saisie):
+#     chiffres = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+#     chiffre_flag = 0
+#     for i in saisie:
+#         if i in chiffres:
+#             chiffre_flag += 1
+#         return False
+#     else:
+#         return True
 
-def est_signe_multiple(saisie):
-    signes = ["+", "-"]
-    signe_flag = 0
-    for i in saisie:
-            if i in signes:
-                signe_flag += 1
-    if signe_flag > 1:
-        return False
-    else:
-        return True
+# def est_signe_multiple(saisie):
+#     signes = ["+", "-"]
+#     signe_flag = 0
+#     for i in saisie:
+#             if i in signes:
+#                 signe_flag += 1
+#     if signe_flag > 1:
+#         return False
+#     else:
+#         return True
 
 
-def est_espace(saisie):
-    return saisie == " "
+# def est_espace(saisie):
+#     return saisie == " "
         
 
-def est_chiffre_puis_signe(saisie):
-    for i in saisie:
-        if est_chiffre(i) and est_signe_multiple(i+1):
-            return True
-    return False
+# def est_chiffre_puis_signe(saisie):
+#     for i in saisie:
+#         if est_chiffre(i) and est_signe_multiple(i+1):
+#             return True
+#     return False
 
 
-def test_entree_chiffre(saisie):
-    if est_signe_multiple(saisie) or est_chiffre_puis_signe(saisie):
-        return False
-    else:
-        return True
+# def test_entree_chiffre(saisie):
+#     if est_signe_multiple(saisie) or est_chiffre_puis_signe(saisie):
+#         return False
+#     else:
+#         return True
 
 
 
@@ -329,6 +329,17 @@ def fin_de_jeu(grille, coord_li, coord_col, reponse, tour):
         print("vous avez arreté de jouer")
 
 
+# ------------ Annulation du coup (ou non) -----------------------------------------------------------
+
+# def gestion_annulation(tictac, grille_graphique, historique, annuler, tour):
+#     if len(historique) > 0:
+#         print("dernier coup joué =", historique[tour-2])                               
+#         annuler = test_O_N(input("Voulez-vous annuler ce coup ? [O]ui ou [N]on :"), 2) 
+#         if annuler == "O":
+#             tour -= 1
+#             suppression(tictac, grille_graphique, historique) 
+
+
 # -------Déroulement du jeu------------------------------------------------------------------
 
 def jeu():
@@ -347,8 +358,8 @@ def jeu():
         reponse = test_O_N(input("On continue ? [O]ui ou [N]on :"), 1)
         
         if reponse == "O":
-
-            if len(historique) > 0:                                                            # Affichage de l'historique et annulation du coup
+            # gestion_annulation(tictac, grille_graphique, historique, annuler, tour)
+            if len(historique) > 0:
                 print("dernier coup joué =", historique[tour-2])                               
                 annuler = test_O_N(input("Voulez-vous annuler ce coup ? [O]ui ou [N]on :"), 2) 
                 if annuler == "O":
