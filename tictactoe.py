@@ -176,8 +176,8 @@ def joueur(tour):
 
 def definition_col_li(grille, coordonnee, txt_li_col):                                 # Fonction un peu compliquée...
     coordonnee = input("Entrez un numéro de " + txt_li_col)
-    if pas_entrer(coordonnee):
-        while pas_entrer(coordonnee) and not test_entree_chiffre(coordonnee) or not test_entree_coord(grille, coordonnee):
+    if est_pas_entrer(coordonnee):
+        while est_pas_entrer(coordonnee) and not test_entree_chiffre(coordonnee) or not test_entree_coord(grille, coordonnee):
 
             if not test_entree_chiffre(coordonnee):
                 print("Veuillez entrer un chiffre svp")
@@ -192,36 +192,35 @@ def definition_col_li(grille, coordonnee, txt_li_col):                          
     return coordonnee
 
 
-# --------- Controle de la bonne saisie d'un chiffre -------------------------------------      # ICI en cours
+# --------- Controle de la bonne saisie d'un chiffre -------------------------------------
 
-def test_entree_chiffre(saisie):
-    chiffres = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", " "]
-    signe_flag = 0
-    chiffre_flag = 0
-    if saisie == "+" or saisie == "-":
-        return False
-    else:
-        for i in saisie:
-            drapeau = False
-            for j in chiffres:
-                if i == j:
-                    drapeau = True
-                    if i == "+" or i == "-":
-                        signe_flag += 1
-                    elif i != "+" or i != "-" or i != " ":
-                        chiffre_flag += 1
-                    if chiffre_flag > 0 and (i == "+" or i == "-"):
-                        return False
-            if drapeau == False or signe_flag > 1 :
-                return False
-        return True
+# def test_entree_chiffre(saisie):
+#     chiffres = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", " "]
+#     signe_flag = 0
+#     chiffre_flag = 0
+#     if saisie == "+" or saisie == "-":
+#         return False
+#     else:
+#         for i in saisie:
+#             drapeau = False
+#             for j in chiffres:
+#                 if i == j:
+#                     drapeau = True
+#                     if i == "+" or i == "-":
+#                         signe_flag += 1
+#                     elif i != "+" or i != "-" or i != " ":
+#                         chiffre_flag += 1
+#                     if chiffre_flag > 0 and (i == "+" or i == "-"):
+#                         return False
+#             if drapeau == False or signe_flag > 1 :
+#                 return False
+#         return True
 
 # Test: 
 # -------- Vérification que la saisie est différent d'ENTRER -------------------------------------------------
 
-def pas_entrer(saisie):
+def est_pas_entrer(saisie):
     return saisie != ""
-
 
 def est_chiffre(saisie):
     return "0" < saisie < "9"
@@ -232,9 +231,9 @@ def est_signe(saisie):
 def est_espace(saisie):
     return saisie == " "
 
-def est_signe_seul(saisie):
+def est_non_signe_seul(saisie):
     for i in range(len(saisie)):
-        if not est_chiffre(saisie[i]):
+        if est_lettre(saisie[i]) or est_chiffre(saisie[i]):
             return False
     return True
 
@@ -266,16 +265,16 @@ def est_chiffre_signe(saisie):
             return False
     return True
 
-def test_entree_chiffre2(saisie):
-    return est_chiffre(saisie) and est_signe_seul(saisie) and est_lettre(saisie) and est_signe_multiple(saisie) and est_signe_espace(saisie) and est_chiffre_signe(saisie)
+def test_entree_chiffre(saisie):
+    return est_non_signe_seul(saisie) and est_lettre(saisie) and est_signe_multiple(saisie) and est_signe_espace(saisie) and est_chiffre_signe(saisie)
 
-saisie_essai = "+3"
-print("signe seul", est_signe_seul(saisie_essai))
-print(est_lettre(saisie_essai))
-print(est_signe_multiple(saisie_essai))
-print(est_signe_espace(saisie_essai))
-print(est_chiffre_signe(saisie_essai))
-print(test_entree_chiffre2(saisie_essai))
+# saisie_essai = "  +"
+# print("signe seul", est_non_signe_seul(saisie_essai))
+# print(est_lettre(saisie_essai))
+# print(est_signe_multiple(saisie_essai))
+# print(est_signe_espace(saisie_essai))
+# print(est_chiffre_signe(saisie_essai))
+# print(test_entree_chiffre2(saisie_essai))
 
 
 # ----------Coordonnée est-elle correct ? -------------------------------------------------
@@ -371,14 +370,14 @@ def jeu():
             if annuler != "O":                                                                 # Si on n'a pas répondu O à annuler, on demande la ligne et colonne à jouer
                 print("C'est au tour du joueur", joueur(tour))
                 coord_li = definition_col_li(tictac, coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
-                if pas_entrer(coord_li):
+                if est_pas_entrer(coord_li):
                     coord_col = definition_col_li(tictac, coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")
 
-                while (pas_entrer(coord_li) and pas_entrer(coord_col)) and not est_vide(tictac, coord_li, coord_col) :
+                while (est_pas_entrer(coord_li) and est_pas_entrer(coord_col)) and not est_vide(tictac, coord_li, coord_col) :
                     print("La case n'est pas vide")
                     coord_li = definition_col_li(tictac, coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
                     coord_col = definition_col_li(tictac, coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")
-                if pas_entrer(coord_li) and pas_entrer(coord_col):
+                if est_pas_entrer(coord_li) and est_pas_entrer(coord_col):
                     ecriture(tictac, grille_graphique, int(coord_li), int(coord_col), tour, historique)
                     tour += 1
 
