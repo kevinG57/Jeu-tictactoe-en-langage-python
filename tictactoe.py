@@ -266,15 +266,15 @@ def est_chiffre_signe(saisie):
     return True
 
 def test_entree_chiffre(saisie):
-    return est_non_signe_seul(saisie) and est_lettre(saisie) and est_signe_multiple(saisie) and est_signe_espace(saisie) and est_chiffre_signe(saisie)
+    return not est_non_signe_seul(saisie) and est_lettre(saisie) and est_signe_multiple(saisie) and est_signe_espace(saisie) and est_chiffre_signe(saisie)
 
-# saisie_essai = "  +"
-# print("signe seul", est_non_signe_seul(saisie_essai))
-# print(est_lettre(saisie_essai))
-# print(est_signe_multiple(saisie_essai))
-# print(est_signe_espace(saisie_essai))
-# print(est_chiffre_signe(saisie_essai))
-# print(test_entree_chiffre2(saisie_essai))
+saisie_essai = "3 3"
+print("signe seul        ", est_non_signe_seul(saisie_essai))
+print("est lettre        ", est_lettre(saisie_essai))
+print("signe multiple    ", est_signe_multiple(saisie_essai))
+print("signe puis espace ", est_signe_espace(saisie_essai))
+print("chiffre puis signe", est_chiffre_signe(saisie_essai))
+print("resultat          ", test_entree_chiffre(saisie_essai))
 
 
 # ----------Coordonnée est-elle correct ? -------------------------------------------------
