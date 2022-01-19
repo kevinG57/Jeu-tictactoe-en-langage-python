@@ -262,17 +262,17 @@ def chiffre_espace_chiffre(saisie):
 
 
 def test_entier(saisie):
-    return not est_signe_seul(saisie) and not est_lettre(saisie) and est_signe_multiple(saisie) and est_signe_espace(saisie) and est_chiffre_signe(saisie) and chiffre_espace_chiffre(saisie)
+    return not est_signe_seul(saisie) and est_lettre(saisie) and est_signe_multiple(saisie) and est_signe_espace(saisie) and est_chiffre_signe(saisie) and chiffre_espace_chiffre(saisie)
 
 
-saisie_essai = "+"
-print("signe seul        ", est_signe_seul(saisie_essai))
-print("est lettre        ", est_lettre(saisie_essai))
-print("signe multiple    ", est_signe_multiple(saisie_essai))
-print("signe puis espace ", est_signe_espace(saisie_essai))
-print("chiffre puis signe", est_chiffre_signe(saisie_essai))
-print("chiffre _ signe   ", chiffre_espace_chiffre(saisie_essai))
-print("resultat          ", test_entier(saisie_essai))
+# saisie_essai = "+3+ "
+# print("signe seul        ", est_signe_seul(saisie_essai))
+# print("est lettre        ", est_lettre(saisie_essai))
+# print("signe multiple    ", est_signe_multiple(saisie_essai))
+# print("signe puis espace ", est_signe_espace(saisie_essai))
+# print("chiffre puis signe", est_chiffre_signe(saisie_essai))
+# print("chiffre _ signe   ", chiffre_espace_chiffre(saisie_essai))
+# print("resultat          ", test_entier(saisie_essai))
 
 # ----------Controle que la coordonnée rentrée est dans la grille --------------------------
 
