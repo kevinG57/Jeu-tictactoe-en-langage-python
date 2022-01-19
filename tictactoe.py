@@ -222,14 +222,18 @@ def definition_col_li(grille, coordonnee, txt_li_col):                          
 def est_pas_entrer(saisie):
     return saisie != ""
 
+
 def est_chiffre(saisie):
-    return "0" < saisie < "9"
+    return "0" <= saisie <= "9"
+
 
 def est_signe(saisie):
     return saisie == "+" or saisie == "-"
 
+
 def est_espace(saisie):
     return saisie == " "
+
 
 def est_non_signe_seul(saisie):
     for i in range(len(saisie)):
@@ -237,11 +241,13 @@ def est_non_signe_seul(saisie):
             return False
     return True
 
+
 def est_lettre(saisie):
     for i in range(len(saisie)):
         if not est_chiffre(saisie[i]) and not est_signe(saisie[i]) and not est_espace(saisie[i]):
             return False
     return True
+
 
 def est_signe_multiple(saisie):
     signe_flag = 0
@@ -253,11 +259,13 @@ def est_signe_multiple(saisie):
     else:
         return True
 
+
 def est_signe_espace(saisie):
     for i in range(len(saisie)-1):
         if est_signe(saisie[i]) and est_espace(saisie[i+1]):
             return False
     return True
+
 
 def est_chiffre_signe(saisie):
     for i in range(len(saisie)-1):
@@ -265,16 +273,29 @@ def est_chiffre_signe(saisie):
             return False
     return True
 
-def test_entree_chiffre(saisie):
-    return not est_non_signe_seul(saisie) and est_lettre(saisie) and est_signe_multiple(saisie) and est_signe_espace(saisie) and est_chiffre_signe(saisie)
 
-saisie_essai = "3 3"
-print("signe seul        ", est_non_signe_seul(saisie_essai))
-print("est lettre        ", est_lettre(saisie_essai))
-print("signe multiple    ", est_signe_multiple(saisie_essai))
-print("signe puis espace ", est_signe_espace(saisie_essai))
-print("chiffre puis signe", est_chiffre_signe(saisie_essai))
-print("resultat          ", test_entree_chiffre(saisie_essai))
+def chiffre_espace_chiffre(saisie):
+    chiffre_espace = 0
+    if len(saisie) > 2:
+        for i in range(len(saisie)):
+            if est_chiffre(saisie[i]) and chiffre_espace == 1:
+                return False
+            if est_chiffre(saisie[i]) and est_espace(saisie[i+1]):
+                chiffre_espace = 1
+    return True
+        
+
+def test_entree_chiffre(saisie):
+    return not est_non_signe_seul(saisie) and est_lettre(saisie) and est_signe_multiple(saisie) and est_signe_espace(saisie) and est_chiffre_signe(saisie) and chiffre_espace_chiffre(saisie)
+
+# saisie_essai = "1 1"
+# print("signe seul        ", est_non_signe_seul(saisie_essai))
+# print("est lettre        ", est_lettre(saisie_essai))
+# print("signe multiple    ", est_signe_multiple(saisie_essai))
+# print("signe puis espace ", est_signe_espace(saisie_essai))
+# print("chiffre puis signe", est_chiffre_signe(saisie_essai))
+# print("chiffre _ signe   ", chiffre_espace_chiffre(saisie_essai))
+# print("resultat          ", test_entree_chiffre(saisie_essai))
 
 
 # ----------Coordonnée est-elle correct ? -------------------------------------------------
