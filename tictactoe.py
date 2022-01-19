@@ -170,10 +170,6 @@ def joueur(tour):
     else:
         return "O"
 
-# -------- Vérification que la saisie est différent d'ENTRER -------------------------------------------------
-
-def pas_entrer(saisie):
-    return saisie != ""
 
 # -------- Vérification des entrées de col et li -----------------------------------------
 
@@ -220,49 +216,66 @@ def test_entree_chiffre(saisie):
                 return False
         return True
 
-
 # Test: 
+# -------- Vérification que la saisie est différent d'ENTRER -------------------------------------------------
+
+def pas_entrer(saisie):
+    return saisie != ""
 
 
-# def est_chiffre(saisie):
-#     chiffres = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-#     chiffre_flag = 0
-#     for i in saisie:
-#         if i in chiffres:
-#             chiffre_flag += 1
-#         return False
-#     else:
-#         return True
+def est_chiffre(saisie):
+    return "0" < saisie < "9"
 
-# def est_signe_multiple(saisie):
-#     signes = ["+", "-"]
-#     signe_flag = 0
-#     for i in saisie:
-#             if i in signes:
-#                 signe_flag += 1
-#     if signe_flag > 1:
-#         return False
-#     else:
-#         return True
+def est_signe(saisie):
+    return saisie == "+" or saisie == "-"
 
+def est_espace(saisie):
+    return saisie == " "
 
-# def est_espace(saisie):
-#     return saisie == " "
-        
+def est_signe_seul(saisie):
+    for i in range(len(saisie)):
+        if not est_chiffre(saisie[i]):
+            return False
+    return True
 
-# def est_chiffre_puis_signe(saisie):
-#     for i in saisie:
-#         if est_chiffre(i) and est_signe_multiple(i+1):
-#             return True
-#     return False
+def est_lettre(saisie):
+    for i in range(len(saisie)):
+        if not est_chiffre(saisie[i]) and not est_signe(saisie[i]) and not est_espace(saisie[i]):
+            return False
+    return True
 
+def est_signe_multiple(saisie):
+    signe_flag = 0
+    for i in saisie:
+        if est_signe(i):
+            signe_flag += 1
+    if signe_flag > 1:
+        return False
+    else:
+        return True
 
-# def test_entree_chiffre(saisie):
-#     if est_signe_multiple(saisie) or est_chiffre_puis_signe(saisie):
-#         return False
-#     else:
-#         return True
+def est_signe_espace(saisie):
+    for i in range(len(saisie)-1):
+        if est_signe(saisie[i]) and est_espace(saisie[i+1]):
+            return False
+    return True
 
+def est_chiffre_signe(saisie):
+    for i in range(len(saisie)-1):
+        if est_chiffre(saisie[i]) and est_signe(saisie[i+1]):
+            return False
+    return True
+
+def test_entree_chiffre2(saisie):
+    return est_chiffre(saisie) and est_signe_seul(saisie) and est_lettre(saisie) and est_signe_multiple(saisie) and est_signe_espace(saisie) and est_chiffre_signe(saisie)
+
+saisie_essai = "+3"
+print("signe seul", est_signe_seul(saisie_essai))
+print(est_lettre(saisie_essai))
+print(est_signe_multiple(saisie_essai))
+print(est_signe_espace(saisie_essai))
+print(est_chiffre_signe(saisie_essai))
+print(test_entree_chiffre2(saisie_essai))
 
 
 # ----------Coordonnée est-elle correct ? -------------------------------------------------
@@ -329,18 +342,8 @@ def fin_de_jeu(grille, coord_li, coord_col, reponse, tour):
         print("vous avez arreté de jouer")
 
 
-# ------------ Annulation du coup (ou non) -----------------------------------------------------------
-
-# def gestion_annulation(tictac, grille_graphique, historique, annuler, tour):
-#     if len(historique) > 0:
-#         print("dernier coup joué =", historique[tour-2])                               
-#         annuler = test_O_N(input("Voulez-vous annuler ce coup ? [O]ui ou [N]on :"), 2) 
-#         if annuler == "O":
-#             tour -= 1
-#             suppression(tictac, grille_graphique, historique) 
-
-
 # -------Déroulement du jeu------------------------------------------------------------------
+
 
 def jeu():
 
@@ -358,7 +361,6 @@ def jeu():
         reponse = test_O_N(input("On continue ? [O]ui ou [N]on :"), 1)
         
         if reponse == "O":
-            # gestion_annulation(tictac, grille_graphique, historique, annuler, tour)
             if len(historique) > 0:
                 print("dernier coup joué =", historique[tour-2])                               
                 annuler = test_O_N(input("Voulez-vous annuler ce coup ? [O]ui ou [N]on :"), 2) 
