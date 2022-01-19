@@ -106,7 +106,7 @@ def test_taille_grille(chiffre):
     return int(chiffre)
 
 
-# ---------- Controle de grille pleine (égalité en cas de grille pleine) ------------------------
+# ---------- Controle de grille pleine (égalité en cas de grille pleine) -----------
 
 def grille_pleine(grille):
     for i in range(taille_grille(grille)):
@@ -116,7 +116,7 @@ def grille_pleine(grille):
     return True
 
 
-# -------Controle si la partie est gagnee (lignes, colonnes et diagonales) --------
+# -------Controle si la partie est gagnee (lignes, colonnes et diagonales) ---------
 
 def partie_gagnee_ligne(grille, li, tour): 
     longueur = taille_grille(grille)
@@ -171,7 +171,7 @@ def joueur(tour):
         return "O"
 
 
-# -------- Vérification des entrées de col et li -----------------------------------------
+# -------- Vérification des entrées de col et li ----------------------------------------
 
 def definition_col_li(grille, coordonnee, txt_li_col):
     coordonnee = input("Entrez un numéro de " + txt_li_col)
@@ -191,7 +191,7 @@ def definition_col_li(grille, coordonnee, txt_li_col):
     return coordonnee
 
 
-# -------- Vérification que la saisie est différente d'ENTRER ------------------------------
+# -------- Vérification que la saisie est différente d'ENTRER ---------------------------
 
 def est_pas_entrer(saisie):
     return saisie != ""
@@ -264,7 +264,7 @@ def test_entier(saisie):
     return not est_non_signe_seul(saisie) and est_lettre(saisie) and est_signe_multiple(saisie) and est_signe_espace(saisie) and est_chiffre_signe(saisie) and chiffre_espace_chiffre(saisie)
 
 
-# ----------Controle que la coordonnée rentrée est dans la grille -------------------------------------------------
+# ----------Controle que la coordonnée rentrée est dans la grille --------------------------
 
 def test_entree_coord(grille, saisie):
     if est_pas_entrer(saisie) and test_entier(saisie) and  0 <= int(saisie) < taille_grille(grille):
@@ -272,7 +272,7 @@ def test_entree_coord(grille, saisie):
     return False
 
 
-# ----------Continuer de jouer ? [O] ou [N] ?--------------------------------------------------
+# ----------Continuer de jouer ? [O] ou [N] ?-----------------------------------------------
 
 def saisie_O_N(saisie):
     if saisie != "N" and saisie != "O":
@@ -333,7 +333,7 @@ def fin_de_jeu(grille, coord_li, coord_col, reponse, tour):
 
 def jeu():
 
-# Définition des variables
+    # Définition des variables
 
     tour = 1
     coord_li = 0
@@ -342,17 +342,17 @@ def jeu():
     annuler = ""
     historique = []                                                                            
 
-# Création de la grille
+    # Création de la grille
 
     tictac, grille_graphique = creation_de_grille()
 
-# Boucle de jeu
+    # Boucle de jeu
 
     while partie_continue(tictac, coord_li, coord_col, reponse, tour):                     
 
         reponse = test_O_N(input("On continue ? [O]ui ou [N]on :"), 1)
 
-# Gestion de l'historique (et annulation du coup précédent)
+        # Gestion de l'historique (et annulation du coup précédent)
         
         if reponse == "O":
             if len(historique) > 0:
@@ -361,6 +361,8 @@ def jeu():
                 if annuler == "O":
                     tour -= 1
                     suppression(tictac, grille_graphique, historique) 
+
+            # Entrée des coordonnées de lignes et de colonnes
 
             if annuler != "O": 
                 print("C'est au tour du joueur", joueur(tour))
@@ -376,9 +378,11 @@ def jeu():
                     ecriture(tictac, grille_graphique, int(coord_li), int(coord_col), tour, historique)
                     tour += 1
 
-# Réinitialisation des variables en fin de boucle
+            # Réinitialisation des variables en fin de boucle
 
             annuler, coord_li, coord_col = "N", 0, 0
+
+    # Fin du jeu (partie gagnée ou grille pleine ou arret de la partie d'un des deux joueurs)
 
     fin_de_jeu(tictac, coord_li, coord_col, reponse, tour)
     grille_graphique.wait_quit()
