@@ -1,15 +1,13 @@
 from graphicalgrid import GraphicalGrid
 
-
-# ICI
-# saisie_essai = " 1"
-# print("signe seul        ", est_non_signe_seul(saisie_essai))
-# print("est lettre        ", est_lettre(saisie_essai))
-# print("signe multiple    ", est_signe_multiple(saisie_essai))
-# print("signe puis espace ", est_signe_espace(saisie_essai))
-# print("chiffre puis signe", est_chiffre_signe(saisie_essai))
-# print("chiffre _ signe   ", chiffre_espace_chiffre(saisie_essai))
-# print("resultat          ", test_entree_chiffre(saisie_essai))
+# saisie_essai = "a+3"
+# print("signe seul        ", un_chiffre_min(saisie_essai))
+# print("est lettre        ", est_pas_lettre(saisie_essai))
+# print("signe multiple    ", pas_signe_multiple(saisie_essai))
+# print("signe puis espace ", est_pas_signe_espace(saisie_essai))
+# print("chiffre puis signe", est_pas_chiffre_signe(saisie_essai))
+# print("chiffre _ signe   ", est_pas_chiffre_espace_chiffre(saisie_essai))
+# print("resultat          ", test_entier(saisie_essai))
 
 # A régler:
 

@@ -213,19 +213,19 @@ def est_espace(saisie):
 
 def un_chiffre_min(saisie):
     for i in range(len(saisie)):
-        if est_chiffre(saisie[i]): # est_lettre(saisie[i]) or
+        if est_chiffre(saisie[i]):
             return True
     return False
 
 
-def est_lettre(saisie):
+def est_pas_lettre(saisie):
     for i in range(len(saisie)):
         if not est_chiffre(saisie[i]) and not est_signe(saisie[i]) and not est_espace(saisie[i]):
             return False
     return True
 
 
-def est_signe_multiple(saisie):
+def pas_signe_multiple(saisie):
     signe_flag = 0
     for i in saisie:
         if est_signe(i):
@@ -263,17 +263,10 @@ def est_pas_chiffre_espace_chiffre(saisie):
 
 
 def test_entier(saisie):
-    return un_chiffre_min(saisie) and est_lettre(saisie) and est_signe_multiple(saisie) and est_pas_signe_espace(saisie) and est_pas_chiffre_signe(saisie) and est_pas_chiffre_espace_chiffre(saisie)
+    return un_chiffre_min(saisie) and pas_signe_multiple(saisie) and est_pas_signe_espace(saisie) and est_pas_chiffre_signe(saisie) and est_pas_chiffre_espace_chiffre(saisie)and est_pas_lettre(saisie)
 
 
-saisie_essai = "3 3"
-print("signe seul        ", un_chiffre_min(saisie_essai))
-print("est lettre        ", est_lettre(saisie_essai))
-print("signe multiple    ", est_signe_multiple(saisie_essai))
-print("signe puis espace ", est_pas_signe_espace(saisie_essai))
-print("chiffre puis signe", est_pas_chiffre_signe(saisie_essai))
-print("chiffre _ signe   ", est_pas_chiffre_espace_chiffre(saisie_essai))
-print("resultat          ", test_entier(saisie_essai))
+
 
 # ----------Controle que la coordonnée rentrée est dans la grille --------------------------
 
