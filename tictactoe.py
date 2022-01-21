@@ -156,16 +156,19 @@ def partie_gagnee_diagonale_2(grille, tour):
 # -------------------- Partie gagnée ----------------------------------------------------
 
 def partie_gagnee(grille, i, j, tour):
-    return partie_gagnee_ligne(grille, i, tour) or partie_gagnee_col(grille, j, tour) or partie_gagnee_diagonale_1(grille, tour) or partie_gagnee_diagonale_2(grille, tour)
+    if est_pas_entrer(i) and est_pas_entrer(j):
+        return partie_gagnee_ligne(grille, i, tour) or partie_gagnee_col(grille, j, tour) or partie_gagnee_diagonale_1(grille, tour) or partie_gagnee_diagonale_2(grille, tour)
+    else:
+        return False
 
 
 # -- Partie finie (partie gagnée, grille pleine ou réponse [O] à "voulez-vous arreter ?"--
 
 def partie_continue(grille, coord_li, coord_col, reponse, tour):
     if est_pas_entrer(coord_li) and est_pas_entrer(coord_col):
-        return not grille_pleine(grille) and not partie_gagnee(grille, coord_li, coord_col, tour) and continuer_de_jouer(reponse)
+        return continuer_de_jouer(reponse) and not grille_pleine(grille) and not partie_gagnee(grille, coord_li, coord_col, tour)
     else:
-        return True
+        return continuer_de_jouer(reponse)
 
 
 # ------------- Qui joue ? -------------------------------------------------------------
