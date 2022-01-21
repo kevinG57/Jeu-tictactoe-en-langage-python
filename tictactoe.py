@@ -28,7 +28,7 @@ def taille_grille(grille):
 # ------------- Vérifie que l'on soit dans la grille --------------------------
 
 def est_dans_grille(grille, i, j):
-    return 0 <= i < taille_grille(grille) and 0 <= j < taille_grille(grille)
+    return 0 <= int(i) < taille_grille(grille) and 0 <= int(j) < taille_grille(grille)
 
 
 # ------------- Vérifie si vide (Question 3) ----------------------------------
@@ -125,7 +125,7 @@ def grille_pleine(grille):
 def partie_gagnee_ligne(grille, li, tour):
     longueur = taille_grille(grille)
     for i in range(longueur):
-        if not est(grille, li, longueur-i, joueur(tour-1)) or est_vide(grille, li, 0):
+        if not est(grille, int(li), i, joueur(tour-1)):
             return False
     return True
 
@@ -133,7 +133,7 @@ def partie_gagnee_ligne(grille, li, tour):
 def partie_gagnee_col(grille, col, tour):
     longueur = taille_grille(grille)
     for i in range(longueur):
-        if not est(grille, longueur-i, col, joueur(tour-1)) or est_vide(grille, 0, col):
+        if not est(grille, i, int(col), joueur(tour-1)):
             return False
     return True
 
@@ -141,7 +141,7 @@ def partie_gagnee_col(grille, col, tour):
 def partie_gagnee_diagonale_1(grille, tour):
     longueur = taille_grille(grille)
     for i in range(longueur):
-        if not est(grille, i, i, joueur(tour-1)) or est_vide(grille, 0, 0):
+        if not est(grille, i, i, joueur(tour-1)):
             return False
     return True
 
@@ -149,7 +149,7 @@ def partie_gagnee_diagonale_1(grille, tour):
 def partie_gagnee_diagonale_2(grille, tour):
     longueur = taille_grille(grille)
     for i in range(longueur):
-        if not est(grille, longueur-i-1, i, joueur(tour-1)) or est_vide(grille, longueur-1, 0):
+        if not est(grille, longueur-i-1, i, joueur(tour-1)):
             return False
     return True
 
@@ -163,7 +163,10 @@ def partie_gagnee(grille, i, j, tour):
 # -- Partie finie (partie gagnée, grille pleine ou réponse [O] à "voulez-vous arreter ?"--
 
 def partie_continue(grille, coord_li, coord_col, reponse, tour):
-    return not grille_pleine(grille) and not partie_gagnee(grille, coord_li, coord_col, tour) and continuer_de_jouer(reponse)
+    if est_pas_entrer(coord_li) and est_pas_entrer(coord_col):
+        return not grille_pleine(grille) and not partie_gagnee(grille, coord_li, coord_col, tour) and continuer_de_jouer(reponse)
+    else:
+        return True
 
 
 # ------------- Qui joue ? -------------------------------------------------------------
@@ -353,8 +356,8 @@ def jeu():
     # Définition des variables (en dehors de la boucle de jeu)
 
     tour = 1
-    coord_li = 0
-    coord_col = 0
+    coord_li = "0"
+    coord_col = "0"
     reponse = "O"
     annuler = ""
     historique = []
@@ -392,14 +395,11 @@ def jeu():
                 if est_pas_entrer(coord_li) and est_pas_entrer(coord_col):
                     ecriture(tictac, grille_graphique, int(coord_li), int(coord_col), tour, historique)
                     tour += 1
-
-            # Réinitialisation des variables en fin de boucle
-
-            annuler, coord_li, coord_col = "N", 0, 0
+                    
 
     # Fin du jeu (partie gagnée, grille pleine ou arret de la partie d'un des deux joueurs)
-
     fin_de_jeu(tictac, coord_li, coord_col, reponse, tour)
+
     grille_graphique.wait_quit()
 
 
