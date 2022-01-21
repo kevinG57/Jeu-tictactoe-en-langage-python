@@ -17,7 +17,6 @@ def cree_grille(taille):
         grille.append(ligne)
     return grille
 
-
 # ------------ Longueur de la grille (Question 2) -----------------------------
 
 def taille_grille(grille):
@@ -263,7 +262,7 @@ def fin_de_jeu(grille, coord_li, coord_col, reponse, tour):
         print("vous avez arreté de jouer")
 
 
-# ------------- Boucle de teste si case selectionnée est bien vide -------------------------
+# ------------ Boucle de teste si la case selectionnée est bien vide ------------------------
 
 def test_case_vide(grille, coord_li, coord_col):
     while (est_pas_entrer(coord_li) and est_pas_entrer(coord_col)) and not est_vide(grille, coord_li, coord_col):
@@ -275,7 +274,7 @@ def test_case_vide(grille, coord_li, coord_col):
 
 
 # ------------------------------------------------------------------------------------- #
-#                                 5. Saisie d'un entier                                 #
+#                               5. Saisie d'un entier                                   #
 # ------------------------------------------------------------------------------------- #
 
 
@@ -392,14 +391,15 @@ def jeu():
 
                 coord_li, coord_col = test_case_vide(tictac, coord_li, coord_col)
 
+                # Si les coordonnées rentrées sont corrects, écriture du coup joué et avancée d'un tour de jeu
+            
                 if est_pas_entrer(coord_li) and est_pas_entrer(coord_col):
                     ecriture(tictac, grille_graphique, int(coord_li), int(coord_col), tour, historique)
                     tour += 1
                     
-
     # Fin du jeu (partie gagnée, grille pleine ou arret de la partie d'un des deux joueurs)
+    
     fin_de_jeu(tictac, coord_li, coord_col, reponse, tour)
-
     grille_graphique.wait_quit()
 
 
