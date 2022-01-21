@@ -80,8 +80,7 @@ def affiche(grille):
 # ------ Création de la grille de jeu-----------------------------------------------
 
 def creation_de_grille():
-    longueur_grille = test_taille_grille(
-        input("Rentrez la taille de la grille :"))
+    longueur_grille = test_taille_grille(input("Rentrez la taille de la grille :"))
     grille_graphique = GraphicalGrid(longueur_grille)
     tictac = cree_grille(longueur_grille)
     return tictac, grille_graphique
@@ -90,7 +89,6 @@ def creation_de_grille():
 # ------ Test taille grille (doit etre supérieure à 2) ------------------------------
 
 def test_taille_grille(chiffre):
-
     while not test_entier(chiffre) or chiffre == "" or chiffre < "3":
         if not test_entier(chiffre):
             print("Veuillez entrer un entier")
@@ -169,7 +167,7 @@ def joueur(tour):
 
 # -------- Vérification des entrées de colonne et ligne --------------------------------
 
-def definition_col_li(grille, coordonnee, txt_li_col):
+def definition_col_li(grille, coordonnee, txt_li_col):          # Fonction un peu compliquée, mais fonctionne...
     coordonnee = input("Entrez un numéro de " + txt_li_col)
     if est_pas_entrer(coordonnee):
         while est_pas_entrer(coordonnee) and not test_entier(coordonnee) or not test_entree_coord(grille, coordonnee):
@@ -323,14 +321,13 @@ def fin_de_jeu(grille, coord_li, coord_col, reponse, tour):
     elif not continuer_de_jouer(reponse):
         print("vous avez arreté de jouer")
 
+# ------------- Boucle de teste si case selectionnée est bien vide -------------------------
 
 def boucle_test_vide(grille, coord_li, coord_col):
     while (est_pas_entrer(coord_li) and est_pas_entrer(coord_col)) and not est_vide(grille, coord_li, coord_col):
         print("La case n'est pas vide")
-        coord_li = definition_col_li(
-            grille, coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
-        coord_col = definition_col_li(
-            grille, coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")
+        coord_li = definition_col_li(grille, coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
+        coord_col = definition_col_li(grille, coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")
 
     return coord_li, coord_col
 
@@ -363,8 +360,7 @@ def jeu():
         if reponse == "O":
             if len(historique) > 0:
                 print("dernier coup joué =", historique[tour-2])
-                annuler = test_O_N(
-                    input("Voulez-vous annuler ce coup ? [O]ui ou [N]on :"), 2)
+                annuler = test_O_N(input("Voulez-vous annuler ce coup ? [O]ui ou [N]on :"), 2)
                 if annuler == "O":
                     tour -= 1
                     suppression(tictac, grille_graphique, historique)
@@ -373,18 +369,14 @@ def jeu():
 
             if annuler != "O":
                 print("C'est au tour du joueur", joueur(tour))
-                coord_li = definition_col_li(
-                    tictac, coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
+                coord_li = definition_col_li(tictac, coord_li, "ligne (appuyez sur entrée pour annuler la saisie) :")
                 if est_pas_entrer(coord_li):
-                    coord_col = definition_col_li(
-                        tictac, coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")
+                    coord_col = definition_col_li(tictac, coord_col, "colonne (appuyez sur entrée pour annuler la saisie) :")
 
-                coord_li, coord_col = boucle_test_vide(
-                    tictac, coord_li, coord_col)
+                coord_li, coord_col = boucle_test_vide(tictac, coord_li, coord_col)
 
                 if est_pas_entrer(coord_li) and est_pas_entrer(coord_col):
-                    ecriture(tictac, grille_graphique, int(coord_li),
-                             int(coord_col), tour, historique)
+                    ecriture(tictac, grille_graphique, int(coord_li), int(coord_col), tour, historique)
                     tour += 1
 
             # Réinitialisation des variables en fin de boucle
