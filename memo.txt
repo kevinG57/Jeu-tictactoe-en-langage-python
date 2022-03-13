@@ -1,5 +1,0 @@
-Extensions:
-
-- bracket pair colorizer 2
-- settings sync
-
