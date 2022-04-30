@@ -109,7 +109,7 @@ def test_taille_grille(chiffre):
     return int(chiffre)
 
 
-# ---------- Controle de grille pleine (égalité en cas de grille pleine) -----------
+# ---------- Controle : la grille est-elle pleine ? (égalité en cas de grille pleine) -----------
 
 def grille_pleine(grille):
     for i in range(taille_grille(grille)):
@@ -119,7 +119,7 @@ def grille_pleine(grille):
     return True
 
 
-# -------Controle si la partie est gagnee (lignes, colonnes et diagonales) ---------
+# -------Controle : la partie est-elle gagnée ? (lignes, colonnes et diagonales) ---------
 
 def partie_gagnee_ligne(grille, li, tour):
     longueur = taille_grille(grille)
@@ -162,7 +162,7 @@ def partie_gagnee(grille, i, j, tour):
         return False
 
 
-# -- Partie finie (partie gagnée, grille pleine ou réponse [O] à "voulez-vous arreter ?"--
+# -- Partie finie (partie gagnée OU grille pleine OU réponse [O] à "voulez-vous arreter ?")--
 
 def partie_continue(grille, coord_li, coord_col, reponse, tour):
     if est_pas_entrer(coord_li) and est_pas_entrer(coord_col):
@@ -205,7 +205,7 @@ def est_pas_entrer(saisie):
     return saisie != ""
 
 
-# ----------Controle que la coordonnée rentrée est dans la grille -----------------------
+# ----------Controle : la coordonnée rentrée est-elle dans la grille ? -----------------------
 
 def test_entree_coord(grille, saisie):
     return est_pas_entrer(saisie) and test_entier(saisie) and 0 <= int(saisie) < taille_grille(grille)
@@ -265,7 +265,7 @@ def fin_de_jeu(grille, coord_li, coord_col, reponse, tour):
         print("vous avez arreté de jouer")
 
 
-# ------------ Boucle de teste si la case selectionnée est bien vide ------------------------
+# ------------ Boucle de test : la case selectionnée est-elle bien vide ? ------------------
 
 def test_case_vide(grille, coord_li, coord_col):
     while (est_pas_entrer(coord_li) and est_pas_entrer(coord_col)) and not est_vide(grille, coord_li, coord_col):
@@ -400,7 +400,7 @@ def jeu():
                     ecriture(tictac, grille_graphique, int(coord_li), int(coord_col), tour, historique)
                     tour += 1
                     
-    # Fin du jeu (partie gagnée, grille pleine ou arret de la partie d'un des deux joueurs)
+    # Fin du jeu (partie gagnée OU grille pleine OU arret de la partie de la part d'un des deux joueurs)
     
     fin_de_jeu(tictac, coord_li, coord_col, reponse, tour)
     grille_graphique.wait_quit()
