@@ -1,5 +1,5 @@
 Bonjour, voici un projet de cours d'algorithmique qu'il m'a été donné de programmer en langage Python lors de mon DUT Informatique.
-Il s'agit du jeu du Tic Tac Toe où les joueurs rentrent les coordonnées de la case où ils veulent jouer dans un terminal.
+Il s'agit du jeu du Tic Tac Toe qui se joue ici dans le terminal et dispose d'un affichage graphique.
 Les contraintes pour faire fonctionner ce jeu de tic tac toe étaient les suivantes :
 
 - Pouvoir générer une grille de taille n*n (3*3, 5*5, 10*10, etc) que l'on demande aux joueurs en début de partie
