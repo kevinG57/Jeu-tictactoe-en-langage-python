@@ -6,6 +6,6 @@ Les contraintes pour faire fonctionner ce jeu de tic tac toe étaient les suivan
 - Ecrire et pouvoir manipuler un historique des coups joués tout au long de la partie
 - Pouvoir annuler le dernier coup joué
 - Représenter la partie en cours sur une grille graphique
-- Interdiction d'utiliser des fonctions des librairies Python (exepté len() )
-- Gestion des entrées du clavier (sans utiliser des fonctions des librairies Python)
-- Gestion de victoire, partie nulle ou interruption de la partie
+- Interdiction d'utiliser des fonctions des librairies Python 
+- Gestion des entrées du clavier
+- Gestion de victoire, partie nulle ou interruption de la partie en cours de jeu
